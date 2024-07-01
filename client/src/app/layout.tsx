@@ -21,7 +21,8 @@ const myFont = localFont({
       weight: '400'
     }
   ],
-  display: 'swap'
+  display: 'swap',
+  variable: '--font-roboto-local'
 })
 
 export const metadata: Metadata = {
@@ -38,7 +39,7 @@ export default function RootLayout({
     <html lang='en'>
       {/* <FontCdn /> */}
       {/* <body className={inter.className}>{children}</body> */}
-      <body className={myFont.className}>{children}</body>
+      <body className={myFont.variable}>{children}</body>
     </html>
   )
 }
