@@ -2,6 +2,8 @@ import type { Metadata } from 'next'
 // import { Roboto } from 'next/font/google'
 import localFont from 'next/font/local'
 import './globals.css'
+import Link from 'next/link'
+import { ROUTE_PATH } from '@/nextApp/route.const'
 
 // https://nextjs.org/docs/pages/building-your-application/optimizing/fonts#google-fonts
 // const roboto = Roboto({
@@ -39,7 +41,12 @@ export default function RootLayout({
     <html lang='en'>
       {/* <FontCdn /> */}
       {/* <body className={inter.className}>{children}</body> */}
-      <body className={myFont.variable}>{children}</body>
+      {/* Nếu Header đặt ngoài body sẽ lỗi hydrate ?? */}
+      {/* https://nextjs.org/docs/app/building-your-application/routing/pages-and-layouts#root-layout-required */}
+      <body className={myFont.variable}>
+        <Link href={ROUTE_PATH.ROOT}>Root Header</Link>
+        {children}
+      </body>
     </html>
   )
 }
