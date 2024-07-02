@@ -1,8 +1,10 @@
 import Image from 'next/image'
 import imgImport from '../../../public/images/suffer.png'
+import ButtonRedirectServer from '../components/ButtonRedirectServer'
 export default function demoImg() {
   return (
     <div>
+      <ButtonRedirectServer />
       <div className=' w-[700px] h-[700px] bg-red-300'>
         <Image
           src='/images/suffer.png'
