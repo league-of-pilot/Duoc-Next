@@ -1,3 +1,5 @@
+import ButtonRedirectServer from '@/app/components/ButtonRedirectServer'
+
 export default function LoginLayout({
   children
 }: Readonly<{
@@ -7,6 +9,7 @@ export default function LoginLayout({
     <div>
       <div className='flex gap-4'>
         <h1>Register Layout</h1> &gt;&gt;
+        <ButtonRedirectServer />
       </div>
       {children}
     </div>
