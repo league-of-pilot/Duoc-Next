@@ -1,4 +1,4 @@
-import ButtonRedirectServer from '@/app/components/ButtonRedirectServer'
+import ButtonRedirectServer from '@/components/ButtonRedirectServer'
 
 export default function LoginLayout({
   children

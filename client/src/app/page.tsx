@@ -1,6 +1,6 @@
 import { FAKE_IS_AUTH } from '@/nextApp/route.const'
-import ButtonRedirect from './components/ButtonRedirect'
-import NavHeader from './components/NavHeader'
+import ButtonRedirect from '../components/ButtonRedirect'
+import NavHeader from '../components/NavHeader'
 
 export default function Home() {
   return (

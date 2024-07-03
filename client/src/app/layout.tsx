@@ -4,6 +4,7 @@ import localFont from 'next/font/local'
 import './globals.css'
 import Link from 'next/link'
 import { ROUTE_PATH } from '@/nextApp/route.const'
+import { ThemeProvider } from '@/components/ThemeProvider'
 
 // https://nextjs.org/docs/pages/building-your-application/optimizing/fonts#google-fonts
 // const roboto = Roboto({
@@ -44,6 +45,12 @@ export default function RootLayout({
       {/* Nếu Header đặt ngoài body sẽ lỗi hydrate ?? */}
       {/* https://nextjs.org/docs/app/building-your-application/routing/pages-and-layouts#root-layout-required */}
       <body className={myFont.variable}>
+        {/* <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          > */}
         <Link href={ROUTE_PATH.ROOT}>Root Header</Link>
         {children}
       </body>
