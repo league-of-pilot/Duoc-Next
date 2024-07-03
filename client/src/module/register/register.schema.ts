@@ -13,12 +13,18 @@ export const registerObjectSchema = z
   .object({
     name: z.string().trim().min(2).max(256),
     email: z.string().email(),
-    password: z.string().min(6).max(100),
-    confirmPassword: z.string().min(6).max(100)
+    password: z.string().min(3).max(100),
+    confirmPassword: z.string().min(3).max(100)
   })
   .strict()
-  .refine(data => data.password === data.confirmPassword, {
-    message: 'Passwords do not match'
+  .superRefine((data, ctx) => {
+    if (data.password !== data.confirmPassword) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ['confirmPassword'],
+        message: 'Passwords do not match'
+      })
+    }
   })
 
 export type TRegisterSchema = z.infer<typeof registerObjectSchema>

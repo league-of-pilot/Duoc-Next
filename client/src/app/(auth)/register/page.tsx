@@ -11,8 +11,10 @@ export default function Register() {
           <ModeToggle />
         </div>
       </div>
-      <div className='flex justify-center'>
-        <RegisterForm />
+      <div className='flex w-full justify-center'>
+        <div className='max-w-[600px] w-full'>
+          <RegisterForm />
+        </div>
       </div>
     </div>
   )
