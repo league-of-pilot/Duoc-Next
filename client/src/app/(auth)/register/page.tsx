@@ -4,7 +4,7 @@ import { RegisterForm } from '@/module/register/RegisterForm'
 // Tên page ko quan trọng
 export default function Register() {
   return (
-    <div>
+    <div className='flex flex-col gap-4'>
       <div className='flex justify-center relative'>
         <h1 className='self-center'>Register Page</h1>
         <div className='absolute left-10'>

@@ -29,21 +29,21 @@ const FormMap: {
     key: 'email',
     label: 'Email',
     component: (props: InputProps) => (
-      <Input placeholder='Enter your email' {...props} />
+      <Input type='email' placeholder='Enter your email' {...props} />
     )
   },
   {
     key: 'password',
     label: 'Password',
     component: (props: InputProps) => (
-      <Input placeholder='Enter your password' {...props} />
+      <Input type='password' placeholder='Enter your password' {...props} />
     )
   },
   {
     key: 'confirmPassword',
     label: 'Confirm Password',
     component: (props: InputProps) => (
-      <Input placeholder='Enter your password' {...props} />
+      <Input type='password' placeholder='Enter your password' {...props} />
     )
   }
 ]
@@ -55,7 +55,11 @@ export function RegisterForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-2'>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className='space-y-2'
+        noValidate
+      >
         {FormMap.map(el => (
           <FormField
             key={el.key}
@@ -70,7 +74,9 @@ export function RegisterForm() {
             )}
           />
         ))}
-        <Button type='submit'>Submit</Button>
+        <Button className='w-full !mt-4' type='submit'>
+          Submit
+        </Button>
       </form>
     </Form>
   )
