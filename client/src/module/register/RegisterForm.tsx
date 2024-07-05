@@ -10,6 +10,8 @@ import {
   FormMessage
 } from '@/components/ui/form'
 import { Input, InputProps } from '@/components/ui/input'
+import { API_URL } from '@/nextApp/api.const'
+import { nativeFetch } from '@/nextApp/fetch.utils'
 import { useForm } from 'react-hook-form'
 import { TRegisterSchema, registerFormSchema } from './register.schema'
 
@@ -49,8 +51,22 @@ const FormMap: {
 ]
 export function RegisterForm() {
   const form = useForm<TRegisterSchema>(registerFormSchema)
-  function onSubmit(values: TRegisterSchema) {
-    console.log(values)
+
+  const onSubmit = async (values: TRegisterSchema) => {
+    //   const result = await fetch(
+    //     `${envConfig.NEXT_PUBLIC_API_ENDPOINT}/auth/register`,
+    //     {
+    //       body: JSON.stringify(values),
+    //       headers: {
+    //         'Content-Type': 'application/json'
+    //       },
+    //       method: 'POST'
+    //     }
+    //   ).then((res) => res.json())
+    // }
+
+    const result = nativeFetch.post(API_URL.AUTH.REGISTER, values)
+    console.log('🚀 ~ result:', result)
   }
 
   return (
