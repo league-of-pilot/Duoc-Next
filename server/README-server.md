@@ -24,5 +24,5 @@ yarn add -D @types/node @typescript-eslint/eslint-plugin @typescript-eslint/pars
 # Fastify pluggin
 
 ```bash
-yarn add @fastify/cors fastify-plugin
+yarn add @fastify/cors fastify-plugin fastify-type-provider-zod
 ```

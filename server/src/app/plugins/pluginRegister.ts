@@ -1,6 +1,8 @@
 import cors from '@fastify/cors'
 import { FastifyPluginCallback } from 'fastify'
 
+import { validatorCompilerPlugin } from './validatorCompiler.plugins'
+
 // Ta5m
 
 // Async callback ko sao
@@ -14,6 +16,9 @@ export const pluginRegister: FastifyPluginCallback = function (
     origin: ['*'], // Cho phép tất cả các domain gọi API
     credentials: true // Cho phép trình duyệt gửi cookie đến server
   })
+
+  // fastify-plugin chỉ có tác dụng trong 1 cấp
+  fastify.register(validatorCompilerPlugin)
 
   done()
 }
