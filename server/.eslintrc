@@ -1,0 +1,99 @@
+{
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint", "prettier", "unused-imports", "import"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "eslint-config-prettier",
+    // "plugin:import/typescript",
+    // "plugin:@typescript-eslint/recommended-requiring-type-checking",
+    "prettier"
+  ],
+  "rules": {
+    "@typescript-eslint/no-explicit-any": "warn",
+    "@typescript-eslint/no-unused-vars": "off",
+    "unused-imports/no-unused-imports": "warn",
+    // "@typescript-eslint/await-thenable": "warn",
+    "no-restricted-imports": [
+      "error",
+      {
+        "patterns": [
+          {
+            "group": ["./app", "*/../app"],
+            "message": "App imports must be absolute."
+          },
+          {
+            "group": ["./core", "*/../core"],
+            "message": "Core imports must be absolute."
+          }
+        ]
+      }
+    ],
+    "import/order": [
+      "error",
+      {
+        "groups": [
+          "builtin",
+          "external",
+          "internal",
+          "parent",
+          "sibling",
+          "index"
+        ],
+        "pathGroups": [
+          {
+            "pattern": "express",
+            "group": "builtin",
+            "position": "before"
+          },
+          {
+            "pattern": "src/**",
+            "group": "internal",
+            "position": "before"
+          },
+          {
+            "pattern": "@app/**",
+            "group": "internal", // Using internal to keep @app within the same top-level grouping
+            "position": "before"
+          },
+          {
+            "pattern": "@core/**",
+            "group": "internal", // Adding @core after @app in the internal group
+            "position": "after"
+          },
+          {
+            "pattern": "@module/**",
+            "group": "internal",
+            "position": "after"
+          },
+          {
+            "pattern": "@vendor/**",
+            "group": "internal",
+            "position": "after"
+          }
+        ],
+        "pathGroupsExcludedImportTypes": ["builtin"],
+        "newlines-between": "always",
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": true
+        }
+      }
+    ],
+    "prettier/prettier": [
+      "warn",
+      {
+        "arrowParens": "avoid",
+        "semi": false,
+        "trailingComma": "none",
+        "tabWidth": 2,
+        "endOfLine": "auto",
+        "useTabs": false,
+        "singleQuote": true,
+        "printWidth": 80,
+        "jsxSingleQuote": true
+      }
+    ]
+  }
+}
