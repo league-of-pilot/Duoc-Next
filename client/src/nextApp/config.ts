@@ -1,19 +1,31 @@
 import { z } from 'zod'
 
-const configSchema = z.object({
-  NEXT_PUBLIC_API_ENDPOINT: z.string()
-})
+// https://nextjs.org/docs/app/building-your-application/configuring/environment-variables
+// const configSchema = z.object({
+//   NEXT_PUBLIC_API_ENDPOINT: z
+//     .string()
+//     .parse(process.env.NEXT_PUBLIC_API_ENDPOINT)
+// })
 
 // dài dòng
 // const configProject = configSchema.safeParse({
 //   NEXT_PUBLIC_API_ENDPOINT: process.env.NEXT_PUBLIC_API_ENDPOINT
 // })
 
-const configProject = configSchema.safeParse(process.env)
-if (!configProject.success) {
-  console.error(configProject.error.issues)
-  throw new Error('Invalid .env')
-}
+// https://nextjs.org/docs/app/building-your-application/configuring/environment-variables#bundling-environment-variables-for-the-browser
+// ko hoạt động dạng tắt như React thường được
+// Docs có đề cập
+// const configProject = configSchema.safeParse(process.env)
+// if (!configProject.success) {
+//   console.error(configProject.error.issues)
+//   throw new Error('Invalid .env')
+// }
 
-const envConfig = configProject.data
+// ko được code dynamic process.env[KEY]
+// cách viết này khi error sẽ throw ngay lập tức, hơi xấu nhưng đỡ dup code
+const envConfig = {
+  NEXT_PUBLIC_API_ENDPOINT: z
+    .string()
+    .parse(process.env.NEXT_PUBLIC_API_ENDPOINT)
+}
 export default envConfig
