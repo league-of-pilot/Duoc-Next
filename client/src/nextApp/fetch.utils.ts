@@ -20,7 +20,7 @@ class NativeFetch {
   ) {}
 
   post<T, V>(url: string, payload: T) {
-    return fetch(`${URL}/${url}`, {
+    return fetch(`${this.URL}${url}`, {
       body: JSON.stringify(payload),
       headers: this.header,
       method: 'POST'

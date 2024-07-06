@@ -65,7 +65,7 @@ export function RegisterForm() {
     //   ).then((res) => res.json())
     // }
 
-    const result = nativeFetch.post(API_URL.AUTH.REGISTER, values)
+    const result = await nativeFetch.post(API_URL.AUTH.REGISTER, values)
     console.log('🚀 ~ result:', result)
   }
 
