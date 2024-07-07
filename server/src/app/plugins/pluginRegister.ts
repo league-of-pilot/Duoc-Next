@@ -1,6 +1,8 @@
 import cors from '@fastify/cors'
 import { FastifyPluginCallback } from 'fastify'
+import { fastifyPlugin } from 'fastify-plugin'
 
+import { errorHandlerPlugin } from './errorHandler.plugins'
 import { validatorCompilerPlugin } from './validatorCompiler.plugins'
 
 // Ta5m
@@ -19,6 +21,7 @@ export const pluginRegister: FastifyPluginCallback = function (
 
   // fastify-plugin chỉ có tác dụng trong 1 cấp
   fastify.register(validatorCompilerPlugin)
+  fastify.register(fastifyPlugin(errorHandlerPlugin))
 
   done()
 }
