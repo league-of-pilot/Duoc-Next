@@ -27,7 +27,8 @@ config({
 const envConfigSchema = z.object({
   PORT: z.coerce.number().default(4000),
   DOMAIN: z.string(),
-  PROTOCOL: z.string()
+  PROTOCOL: z.string(),
+  DATABASE_URL: z.string()
 })
 
 type EnvConfig = z.infer<typeof envConfigSchema>
