@@ -1,6 +1,7 @@
 import { FastifyPluginAsync } from 'fastify'
 
 import { RegisterBody, RegisterBodyType } from './register.schema'
+import { registerController } from './auth.controller'
 
 // Ta5m
 export const authRoutes: FastifyPluginAsync = async function routes(
@@ -17,7 +18,8 @@ export const authRoutes: FastifyPluginAsync = async function routes(
       }
     },
     async (request, reply) => {
-      // reply.send({ hello: 'world' })
+      const { body } = request
+      await registerController(body)
       return { hello: 'world' }
     }
   )
