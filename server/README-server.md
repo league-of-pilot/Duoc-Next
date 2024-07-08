@@ -39,3 +39,7 @@ yarn add @prisma/client
 prisma generate
 yarn prisma db push
 ```
+
+```bash
+yarn add @fastify/cookie
+```
