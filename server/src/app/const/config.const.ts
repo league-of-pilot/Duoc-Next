@@ -2,6 +2,7 @@ import 'dotenv/config'
 import fs from 'fs'
 import path from 'path'
 
+import { FastifyCookieOptions } from '@fastify/cookie'
 import { config } from 'dotenv'
 import { z } from 'zod'
 
@@ -46,3 +47,19 @@ const validateEnvConfig = (config = process.env): EnvConfig => {
 }
 
 export const envConfig = validateEnvConfig()
+
+// =================================================================
+// Other config not in .env but can be hard-cord for simplify
+// =================================================================
+
+export const fastifyCookieOptionsOptional = {
+  secret: 'my-secret', // for cookies signature
+  parseOptions: {} // options for parsing cookies
+} as FastifyCookieOptions
+
+export const COOKIE_MODE = true
+
+export const SESSION_TOKEN_EXPIRES_IN =
+  envConfig.SESSION_TOKEN_EXPIRES_IN_HOUR * 60 * 60 * 1000
+
+export const API_URL = `${envConfig.PROTOCOL}://${envConfig.DOMAIN}:${envConfig.PORT}`

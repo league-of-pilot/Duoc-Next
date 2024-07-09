@@ -5,7 +5,7 @@ import { FastifyError, FastifyPluginAsync } from 'fastify'
 
 import { ERR_CODE } from '@app/const/error.const'
 
-import { ZodFastifyError, isZodFastifyError } from './error.type'
+import { ZodFastifyError, isZodFastifyError } from '../types/error.type'
 
 // fastify plugin ở tầng merge - for learning
 export const errorHandlerPlugin: FastifyPluginAsync = async fastify => {

@@ -1,11 +1,12 @@
+import cookie from '@fastify/cookie'
 import cors from '@fastify/cors'
 import { FastifyPluginCallback } from 'fastify'
 import { fastifyPlugin } from 'fastify-plugin'
 
+import { fastifyCookieOptionsOptional } from '@app/const/config.const'
+
 import { errorHandlerPlugin } from './errorHandler.plugins'
 import { validatorCompilerPlugin } from './validatorCompiler.plugins'
-import type { FastifyCookieOptions } from '@fastify/cookie'
-import cookie from '@fastify/cookie'
 
 // Async callback ko sao
 export const pluginRegister: FastifyPluginCallback = function (
@@ -22,10 +23,7 @@ export const pluginRegister: FastifyPluginCallback = function (
   // fastify-plugin chỉ có tác dụng trong 1 cấp
   fastify.register(validatorCompilerPlugin)
   fastify.register(fastifyPlugin(errorHandlerPlugin))
-  fastify.register(cookie, {
-    secret: 'my-secret', // for cookies signature
-    parseOptions: {} // options for parsing cookies
-  } as FastifyCookieOptions)
+  fastify.register(cookie, fastifyCookieOptionsOptional)
 
   done()
 }
