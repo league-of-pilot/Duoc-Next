@@ -19,12 +19,24 @@ class NativeFetch {
     public URL = envConfig.NEXT_PUBLIC_API_ENDPOINT
   ) {}
 
-  post<T, V>(url: string, payload: T) {
+  rawPost<V, T>(url: string, payload: T) {
     return fetch(`${this.URL}${url}`, {
       body: JSON.stringify(payload),
       headers: this.header,
       method: 'POST'
-    }).then(res => res.json() as V)
+    })
+  }
+
+  post<V, T>(url: string, payload: T) {
+    return this.rawPost(url, payload).then(res => res.json() as V)
+  }
+
+  // Vấn đề logic gọi
+  advPost<V, T = unknown>(url: string, payload: T) {
+    return this.rawPost(url, payload).then(async res => {
+      const resJson = (await res.json()) as V
+      return [resJson, res] as const
+    })
   }
 }
 

@@ -1,3 +1,4 @@
+import { Toaster } from '@/components/ui/toaster'
 import { ROUTE_PATH } from '@/nextApp/route.const'
 import Link from 'next/link'
 
@@ -14,6 +15,7 @@ export default function AuthLayout({
         <div>
           <Link href={ROUTE_PATH.ROOT}>Back to Home</Link>
         </div>
+        <Toaster />
       </div>
       {children}
     </div>

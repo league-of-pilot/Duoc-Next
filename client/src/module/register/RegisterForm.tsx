@@ -14,6 +14,7 @@ import { API_URL } from '@/nextApp/api.const'
 import { nativeFetch } from '@/nextApp/fetch.utils'
 import { useForm } from 'react-hook-form'
 import { TRegisterSchema, registerFormSchema } from './register.schema'
+import StaticCheck from '@/components/StaticCheck'
 
 const FormMap: {
   key: keyof TRegisterSchema
@@ -92,6 +93,7 @@ export function RegisterForm() {
         ))}
         <Button className='w-full !mt-4' type='submit'>
           Submit
+          <StaticCheck />
         </Button>
       </form>
     </Form>
