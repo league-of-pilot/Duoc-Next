@@ -16,6 +16,7 @@ import { TLoginSchema, loginFormSchema } from './login.schema'
 import StaticCheck from '@/components/StaticCheck'
 import { nativeFetch } from '@/nextApp/fetch.utils'
 import { API_URL } from '@/nextApp/api.const'
+import { useToast } from '@/components/ui/use-toast'
 
 const FormMap: {
   key: keyof TLoginSchema
@@ -40,16 +41,47 @@ const FormMap: {
 
 const LoginForm = () => {
   const form = useForm<TLoginSchema>(loginFormSchema)
+  const { toast } = useToast()
 
-  // 2. Define a submit handler.
   async function onSubmit(values: TLoginSchema) {
     try {
-      const result = await nativeFetch.post(API_URL.AUTH.LOGIN, values)
-      console.log('🚀 ~ result:', result)
-      // TODO : Toast success
+      const [resJson, res] = await nativeFetch.advPost<{
+        message: string
+        data: { token: string }
+      }>(API_URL.AUTH.LOGIN, values)
+      const data = {
+        status: res.status,
+        payload: resJson
+      }
+      if (!res.ok) {
+        throw data
+      }
+      toast({
+        description: resJson.message
+      })
+      localStorage.setItem('sessionToken', resJson.data.token)
     } catch (error: any) {
-      // TODO : Toast noti when error
-      console.log(error)
+      // Error catch có 2 TH -> 1 là parse JSON fail, 2 là error request
+      // logic handle Error khá ẩu, tạm skip
+      const errors = error.payload.errors as {
+        field: string
+        message: string
+      }[]
+      const status = error.status as number
+      if (status === 422) {
+        errors.forEach(error => {
+          form.setError(error.field as 'email' | 'password', {
+            type: 'server',
+            message: error.message
+          })
+        })
+      } else {
+        toast({
+          title: 'Lỗi',
+          description: error.payload.message,
+          variant: 'destructive'
+        })
+      }
     }
   }
 

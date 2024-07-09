@@ -1,6 +1,6 @@
 export const ERR_CODE = {
   ZOD: 422,
-  UNHANDLED: 505
+  UNHANDLED: 555
 } as const
 
 export const PRISMA_ERR_CODE = {
