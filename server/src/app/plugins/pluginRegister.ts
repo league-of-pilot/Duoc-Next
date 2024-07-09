@@ -1,3 +1,4 @@
+import { fastifyAuth } from '@fastify/auth'
 import cookie from '@fastify/cookie'
 import cors from '@fastify/cors'
 import { FastifyPluginCallback } from 'fastify'
@@ -25,5 +26,8 @@ export const pluginRegister: FastifyPluginCallback = function (
   fastify.register(fastifyPlugin(errorHandlerPlugin))
   fastify.register(cookie, fastifyCookieOptionsOptional)
 
+  fastify.register(fastifyAuth, {
+    defaultRelation: 'and'
+  })
   done()
 }
