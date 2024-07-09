@@ -3,6 +3,10 @@ import { prisma } from '@app/database'
 import { AuthError } from '@app/types/error.class'
 import { FastifyRequest } from 'fastify'
 
+export const getCookieUtils = (request: FastifyRequest) =>
+  COOKIE_MODE
+    ? request.cookies.sessionToken
+    : request.headers.authorization?.split(' ')[1]
 // https://fastify.dev/docs/latest/Reference/Hooks/
 // async hook ko cần gọi done()
 
@@ -10,9 +14,7 @@ import { FastifyRequest } from 'fastify'
 // -> nơi nên đặt hook validate user tùy cách nhận data
 
 export const requireLoginedHook = async (request: FastifyRequest) => {
-  const sessionToken = COOKIE_MODE
-    ? request.cookies.sessionToken
-    : request.headers.authorization?.split(' ')[1]
+  const sessionToken = getCookieUtils(request)
 
   if (!sessionToken) throw new AuthError('Không nhận được session token')
   const session_row = await prisma.session.findUnique({

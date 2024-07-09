@@ -83,3 +83,12 @@ export const loginService = async (body: LoginBodyType) => {
     session
   }
 }
+
+export const logoutService = async (sessionToken: string) => {
+  await prisma.session.delete({
+    where: {
+      token: sessionToken
+    }
+  })
+  return 'Đăng xuất thành công'
+}
