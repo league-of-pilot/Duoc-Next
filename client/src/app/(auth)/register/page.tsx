@@ -1,3 +1,4 @@
+import StaticCheck from '@/components/StaticCheck'
 import { ModeToggle } from '@/components/ThemeToggle'
 import { RegisterForm } from '@/module/register/RegisterForm'
 
@@ -7,6 +8,7 @@ export default function Register() {
     <div className='flex flex-col gap-4'>
       <div className='flex justify-center relative'>
         <h1 className='self-center'>Register Page</h1>
+        <StaticCheck />
         <div className='absolute left-10'>
           <ModeToggle />
         </div>

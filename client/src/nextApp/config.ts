@@ -29,3 +29,5 @@ const envConfig = {
     .parse(process.env.NEXT_PUBLIC_API_ENDPOINT)
 }
 export default envConfig
+
+export const STATIC_CHECK = false
