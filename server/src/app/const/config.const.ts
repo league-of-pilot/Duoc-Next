@@ -1,8 +1,8 @@
+import { FastifyCookieOptions } from '@fastify/cookie'
+import { config } from 'dotenv'
 import 'dotenv/config'
 import fs from 'fs'
 import path from 'path'
-
-import { config } from 'dotenv'
 import { z } from 'zod'
 
 // interface EnvConfig extends NodeJS.ProcessEnv {
@@ -46,3 +46,8 @@ const validateEnvConfig = (config = process.env): EnvConfig => {
 }
 
 export const envConfig = validateEnvConfig()
+
+export const fastifyCookieOptionsOptional = {
+  secret: 'my-secret', // for cookies signature
+  parseOptions: {} // options for parsing cookies
+} as FastifyCookieOptions
