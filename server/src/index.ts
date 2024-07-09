@@ -1,8 +1,7 @@
 import Fastify from 'fastify'
 import fp from 'fastify-plugin'
 
-import { envConfig } from '@app/const/config.const'
-import { API_URL } from '@app/const/global.const'
+import { API_URL, envConfig } from '@app/const/config.const'
 import { pluginRegister } from '@app/plugins/pluginRegister'
 
 import { routeRegister } from '@module/routeRegister'

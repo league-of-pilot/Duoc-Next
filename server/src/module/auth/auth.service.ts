@@ -1,5 +1,5 @@
+import { SESSION_TOKEN_EXPIRES_IN } from '@app/const/config.const'
 import { PRISMA_ERR_CODE } from '@app/const/error.const'
-import { SESSION_TOKEN_EXPIRES_IN } from '@app/const/global.const'
 import { prisma } from '@app/database'
 import { EntityError } from '@app/types/error.class'
 import { isPrismaClientKnownRequestError } from '@app/types/error.type'
