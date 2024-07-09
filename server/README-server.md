@@ -43,3 +43,12 @@ yarn prisma db push
 ```bash
 yarn add @fastify/cookie
 ```
+
+Note chú ý về server
+Sẽ sử dụng postman được cung cấp để dùng
+Mục đính chính là học nhanh fastify chứ ko phải học BE kỹ
+1 số generic type của request đôi lúc code ko kỹ thiếu type
+Các phần logic thuần ko quá thiên về tech thì copy-paste
+
+1 lớp BE nhẹ để học FE - NEXT
+ko phải là prj chính để học BE
