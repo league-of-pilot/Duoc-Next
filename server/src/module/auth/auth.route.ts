@@ -1,6 +1,8 @@
+import { FastifyPluginAsync } from 'fastify'
+
 import { envConfig } from '@app/const/config.const'
 import { COOKIE_MODE } from '@app/const/global.const'
-import { FastifyPluginAsync } from 'fastify'
+
 import { registerService } from './auth.service'
 import {
   RegisterBody,

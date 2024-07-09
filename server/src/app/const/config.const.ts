@@ -1,8 +1,9 @@
-import { FastifyCookieOptions } from '@fastify/cookie'
-import { config } from 'dotenv'
 import 'dotenv/config'
 import fs from 'fs'
 import path from 'path'
+
+import { FastifyCookieOptions } from '@fastify/cookie'
+import { config } from 'dotenv'
 import { z } from 'zod'
 
 // interface EnvConfig extends NodeJS.ProcessEnv {
