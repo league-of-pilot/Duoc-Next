@@ -1,5 +1,5 @@
 import { FastifyPluginAsync } from 'fastify'
-import { RegisterBody, RegisterBodyType } from './register.schema'
+import { RegisterBody, RegisterBodyType, RegisterRes } from './register.schema'
 import { registerService } from './auth.service'
 import { envConfig } from '@app/const/config.const'
 import { COOKIE_MODE } from '@app/const/global.const'
@@ -15,7 +15,10 @@ export const authRoutes: FastifyPluginAsync = async function routes(
     '/register',
     {
       schema: {
-        body: RegisterBody
+        body: RegisterBody,
+        response: {
+          '2xx': RegisterRes
+        }
       }
     },
     async (request, reply) => {
