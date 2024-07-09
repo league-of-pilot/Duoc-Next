@@ -4,8 +4,8 @@ import { fastifyPlugin } from 'fastify-plugin'
 
 import { errorHandlerPlugin } from './errorHandler.plugins'
 import { validatorCompilerPlugin } from './validatorCompiler.plugins'
-
-// Ta5m
+import type { FastifyCookieOptions } from '@fastify/cookie'
+import cookie from '@fastify/cookie'
 
 // Async callback ko sao
 export const pluginRegister: FastifyPluginCallback = function (
@@ -22,6 +22,10 @@ export const pluginRegister: FastifyPluginCallback = function (
   // fastify-plugin chỉ có tác dụng trong 1 cấp
   fastify.register(validatorCompilerPlugin)
   fastify.register(fastifyPlugin(errorHandlerPlugin))
+  fastify.register(cookie, {
+    secret: 'my-secret', // for cookies signature
+    parseOptions: {} // options for parsing cookies
+  } as FastifyCookieOptions)
 
   done()
 }

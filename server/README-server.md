@@ -21,8 +21,25 @@ Tránh mất thời gian với eslint có thể downgrade xuống
 yarn add -D @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser eslint eslint-config-prettier eslint-plugin-prettier eslint-plugin-import eslint-plugin-unused-imports nodemon prettier ts-node tsc-alias tsconfig-paths typescript tsx
 ```
 
-# Fastify pluggin
+# Fastify plugin
 
 ```bash
 yarn add @fastify/cors fastify-plugin fastify-type-provider-zod
+```
+
+https://www.prisma.io/docs/getting-started/quickstart
+
+# Prisma init
+
+```bash
+yarn add -D prisma
+yarn prisma init --datasource-provider sqlite
+yarn add @prisma/client
+
+prisma generate
+yarn prisma db push
+```
+
+```bash
+yarn add @fastify/cookie
 ```
