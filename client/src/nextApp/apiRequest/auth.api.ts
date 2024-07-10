@@ -4,6 +4,7 @@ import { TRegisterSchema } from '@/module/register/register.schema'
 import { API_URL, NEXT_API } from '../api.const'
 import { LoginResType, RegisterResType } from './auth.schema'
 import { http } from './http'
+import { MessageResType } from './common.schema'
 
 const authApiRequest = {
   login: (body: TLoginSchema) =>
@@ -15,7 +16,27 @@ const authApiRequest = {
   auth: (body: { sessionToken: string }) =>
     http.post(NEXT_API.AUTH, body, {
       baseUrl: ''
-    })
+    }),
+
+  logoutFromNextServerToServer: (sessionToken: string) =>
+    http.post<MessageResType>(
+      API_URL.AUTH.LOGOUT,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${sessionToken}`
+        }
+      }
+    ),
+
+  logoutFromNextClientToNextServer: () =>
+    http.post<MessageResType>(
+      NEXT_API.AUTH_LOGOUT,
+      {},
+      {
+        baseUrl: ''
+      }
+    )
 }
 
 export default authApiRequest

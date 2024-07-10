@@ -1,6 +1,6 @@
-import { NAV_CONST, ROUTE_PATH } from '@/nextApp/route.const'
+import ButtonLogout from '@/module/logout/button-logout'
+import { NAV_CONST } from '@/nextApp/route.const'
 import Link from 'next/link'
-import React from 'react'
 
 export default function NavHeader() {
   return (
@@ -10,6 +10,7 @@ export default function NavHeader() {
           <Link href={el.path}>{el.name}</Link>
         </li>
       ))}
+      <ButtonLogout />
     </div>
   )
 }

@@ -10,6 +10,7 @@ class SessionToken {
     if (!isClient()) {
       throw new Error('Cannot set token on server side')
     }
+    console.log('🚀 sessionToken set', token.slice(-5))
     this.token = token
   }
 }
