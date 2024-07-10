@@ -1,3 +1,4 @@
+import Profile from '@/module/profile/Profile'
 import { API_URL } from '@/nextApp/api.const'
 import envConfig from '@/nextApp/config'
 import { cookies } from 'next/headers'
@@ -38,6 +39,7 @@ export default async function MeProfile() {
     <div>
       <h1>Profile</h1>
       <div>Xin chào {result?.payload?.data?.name}</div>
+      <Profile />
     </div>
   )
 }
