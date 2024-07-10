@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/form'
 import { Input, InputProps } from '@/components/ui/input'
 import { useToast } from '@/components/ui/use-toast'
-import { API_URL } from '@/nextApp/api.const'
+import { API_URL, NEXT_API } from '@/nextApp/api.const'
 import { nativeFetch } from '@/nextApp/fetch.utils'
 import { useForm } from 'react-hook-form'
 import { TLoginSchema, loginFormSchema } from './login.schema'
@@ -64,7 +64,7 @@ const LoginForm = () => {
       // ko set localStorage mà sẽ dùng next server trung gian để set ngược cookie từ api trả về
       // cảm giác logic hơi ngớ ngẩn, kiểu đi 2 trip
       // TODO liệu có better solution ko ? server action ?
-      const resultFromNextServer = await fetch('/api/auth', {
+      const resultFromNextServer = await fetch(NEXT_API.AUTH, {
         method: 'POST',
         body: JSON.stringify(resJson),
         headers: {

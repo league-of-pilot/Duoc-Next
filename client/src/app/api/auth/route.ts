@@ -5,6 +5,9 @@ export async function POST(request: Request) {
   const res = await request.json()
   const sessionToken = res.data?.token
 
+  const time = new Date().toLocaleTimeString('en-US')
+  console.log(`🚀 ${sessionToken.slice(-5)} ${time}`)
+
   if (!sessionToken) {
     return Response.json(
       { message: 'Không nhận được session token' },

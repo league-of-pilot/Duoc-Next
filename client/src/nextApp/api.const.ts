@@ -7,3 +7,7 @@ export const API_URL = {
     ME: '/account/me'
   }
 }
+
+export const NEXT_API = {
+  AUTH: '/api/auth'
+}
