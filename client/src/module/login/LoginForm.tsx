@@ -1,6 +1,5 @@
 'use client'
 
-import { useAppContext } from '@/app/AppProvider'
 import StaticCheck from '@/components/StaticCheck'
 import { Button } from '@/components/ui/button'
 import {
@@ -14,9 +13,9 @@ import {
 import { Input, InputProps } from '@/components/ui/input'
 import { useToast } from '@/components/ui/use-toast'
 import authApiRequest from '@/nextApp/apiRequest/auth.api'
+import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { TLoginSchema, loginFormSchema } from './login.schema'
-import { useRouter } from 'next/navigation'
 
 const FormMap: {
   key: keyof TLoginSchema
@@ -42,7 +41,6 @@ const FormMap: {
 const LoginForm = () => {
   const form = useForm<TLoginSchema>(loginFormSchema)
   const { toast } = useToast()
-  const { setSessionToken } = useAppContext()
   const router = useRouter()
 
   async function onSubmit(values: TLoginSchema) {
@@ -57,8 +55,8 @@ const LoginForm = () => {
       // cảm giác logic hơi ngớ ngẩn, kiểu đi 2 trip
       // TODO liệu có better solution ko ? server action ?
       const token = result.payload.data.token
+      // Đã cheat interceptor set cookie vào luôn
       await authApiRequest.auth({ sessionToken: token })
-      setSessionToken(token)
       router.push('/me')
     } catch (error: any) {
       // Error catch có 2 TH -> 1 là parse JSON fail, 2 là error request

@@ -1,5 +1,7 @@
 import envConfig from '@/nextApp/config'
 import { HttpError } from '@/nextApp/nextApp.type'
+import { clientSessionToken } from './sessionToken'
+import { LoginResType } from './auth.schema'
 
 type CustomOptions = Omit<RequestInit, 'method'> & {
   baseUrl?: string
@@ -13,7 +15,10 @@ const request = async <Response>(
 ) => {
   const body = options?.body ? JSON.stringify(options.body) : undefined
   const baseHeaders = {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    Authorization: clientSessionToken.value
+      ? `Bearer ${clientSessionToken.value}`
+      : ''
   }
 
   // Nếu không truyền baseUrl (hoặc baseUrl = undefined) thì lấy từ envConfig.NEXT_PUBLIC_API_ENDPOINT
@@ -42,6 +47,13 @@ const request = async <Response>(
   }
   if (!res.ok) {
     throw new HttpError(data)
+  }
+
+  // Cheat interceptor, tạm chấp nhận, tiện set cookie vào obj clientSessionToken
+  if (['/auth/login', '/auth/register'].includes(url)) {
+    clientSessionToken.value = (payload as LoginResType).data.token
+  } else if ('/auth/logout'.includes(url)) {
+    clientSessionToken.value = ''
   }
 
   return data
