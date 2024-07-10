@@ -17,8 +17,9 @@ export async function POST(request: Request) {
   return Response.json(res, {
     status: 200,
     // Set path cụ thể nếu ko default sẽ là path /api
+    // Debug application -> cookie sẽ thấy tick http nhưng vẫn xem được giá trị ?
     headers: {
-      'Set-Cookie': `sessionToken=${sessionToken}; Path=/;`
+      'Set-Cookie': `sessionToken=${sessionToken}; Path=/; HttpOnly;`
     }
   })
 }
