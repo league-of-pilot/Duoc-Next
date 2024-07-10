@@ -17,6 +17,7 @@ import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { TRegisterSchema, registerFormSchema } from './register.schema'
 import { handleErrorApi } from '@/nextApp/apiRequest/fetch.utils'
+import { useState } from 'react'
 
 const FormMap: {
   key: keyof TRegisterSchema
@@ -56,8 +57,12 @@ export function RegisterForm() {
   const form = useForm<TRegisterSchema>(registerFormSchema)
   const { toast } = useToast()
   const router = useRouter()
+  const [loading, setLoading] = useState(false)
 
   const onSubmit = async (values: TRegisterSchema) => {
+    if (loading) return
+    setLoading(true)
+
     try {
       const result = await authApiRequest.register(values)
       toast({
@@ -71,6 +76,8 @@ export function RegisterForm() {
         error,
         setError: form.setError
       })
+    } finally {
+      setLoading(false)
     }
   }
 

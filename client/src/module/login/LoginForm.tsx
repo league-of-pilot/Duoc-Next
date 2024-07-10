@@ -17,6 +17,7 @@ import { handleErrorApi } from '@/nextApp/apiRequest/fetch.utils'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { TLoginSchema, loginFormSchema } from './login.schema'
+import { useState } from 'react'
 
 const FormMap: {
   key: keyof TLoginSchema
@@ -43,8 +44,12 @@ const LoginForm = () => {
   const form = useForm<TLoginSchema>(loginFormSchema)
   const { toast } = useToast()
   const router = useRouter()
+  const [loading, setLoading] = useState(false)
 
   async function onSubmit(values: TLoginSchema) {
+    if (loading) return
+    setLoading(true)
+
     try {
       const result = await authApiRequest.login(values)
       toast({
@@ -64,6 +69,8 @@ const LoginForm = () => {
         error,
         setError: form.setError
       })
+    } finally {
+      setLoading(false)
     }
   }
 
