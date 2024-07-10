@@ -16,6 +16,7 @@ import { useToast } from '@/components/ui/use-toast'
 import authApiRequest from '@/nextApp/apiRequest/auth.api'
 import { useForm } from 'react-hook-form'
 import { TLoginSchema, loginFormSchema } from './login.schema'
+import { useRouter } from 'next/navigation'
 
 const FormMap: {
   key: keyof TLoginSchema
@@ -42,6 +43,7 @@ const LoginForm = () => {
   const form = useForm<TLoginSchema>(loginFormSchema)
   const { toast } = useToast()
   const { setSessionToken } = useAppContext()
+  const router = useRouter()
 
   async function onSubmit(values: TLoginSchema) {
     try {
@@ -57,6 +59,7 @@ const LoginForm = () => {
       const token = result.payload.data.token
       await authApiRequest.auth({ sessionToken: token })
       setSessionToken(token)
+      router.push('/me')
     } catch (error: any) {
       // Error catch có 2 TH -> 1 là parse JSON fail, 2 là error request
       // logic handle Error khá ẩu, tạm skip

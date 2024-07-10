@@ -1,5 +1,6 @@
 'use client'
 
+import StaticCheck from '@/components/StaticCheck'
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -10,11 +11,11 @@ import {
   FormMessage
 } from '@/components/ui/form'
 import { Input, InputProps } from '@/components/ui/input'
-import { API_URL } from '@/nextApp/api.const'
-import { nativeFetch } from '@/nextApp/fetch.utils'
+import { useToast } from '@/components/ui/use-toast'
+import authApiRequest from '@/nextApp/apiRequest/auth.api'
 import { useForm } from 'react-hook-form'
 import { TRegisterSchema, registerFormSchema } from './register.schema'
-import StaticCheck from '@/components/StaticCheck'
+import { useRouter } from 'next/navigation'
 
 const FormMap: {
   key: keyof TRegisterSchema
@@ -52,22 +53,17 @@ const FormMap: {
 ]
 export function RegisterForm() {
   const form = useForm<TRegisterSchema>(registerFormSchema)
+  const { toast } = useToast()
+  const router = useRouter()
 
   const onSubmit = async (values: TRegisterSchema) => {
-    //   const result = await fetch(
-    //     `${envConfig.NEXT_PUBLIC_API_ENDPOINT}/auth/register`,
-    //     {
-    //       body: JSON.stringify(values),
-    //       headers: {
-    //         'Content-Type': 'application/json'
-    //       },
-    //       method: 'POST'
-    //     }
-    //   ).then((res) => res.json())
-    // }
-
-    const result = await nativeFetch.post(API_URL.AUTH.REGISTER, values)
-    console.log('🚀 ~ result:', result)
+    const result = await authApiRequest.register(values)
+    toast({
+      description: result.payload.message
+    })
+    // register ok thì flow BE trả token về, xem như login luôn
+    await authApiRequest.auth({ sessionToken: result.payload.data.token })
+    router.push('/me')
   }
 
   return (
