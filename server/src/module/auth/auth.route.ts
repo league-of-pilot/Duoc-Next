@@ -1,17 +1,17 @@
 import { FastifyPluginAsync } from 'fastify'
 
 import { envConfig, COOKIE_MODE } from '@app/const/config.const'
+import { getCookieUtils, requireLoginedHook } from '@app/hook/auth.hook'
+import { MessageRes, MessageResType } from '@app/types/common.type'
 
 import { loginService, logoutService, registerService } from './auth.service'
+import { LoginBody, LoginRes } from './login.schema'
 import {
   RegisterBody,
   RegisterBodyType,
   RegisterRes,
   RegisterResType
 } from './register.schema'
-import { LoginBody, LoginRes } from './login.schema'
-import { MessageRes, MessageResType } from '@app/types/common.type'
-import { getCookieUtils, requireLoginedHook } from '@app/hook/auth.hook'
 
 // Ta5m
 export const authRoutes: FastifyPluginAsync = async function routes(

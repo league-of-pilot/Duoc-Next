@@ -1,4 +1,5 @@
 import z from 'zod'
+
 import { RegisterRes } from './register.schema'
 
 // For Login

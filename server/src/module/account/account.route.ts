@@ -1,6 +1,7 @@
 import { FastifyPluginAsync } from 'fastify'
 
 import { requireLoginedHook } from '@app/hook/auth.hook'
+
 import { AccountResType } from './account.schema'
 
 export const accountRoutes: FastifyPluginAsync = async function (

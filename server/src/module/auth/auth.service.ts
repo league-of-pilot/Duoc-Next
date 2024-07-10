@@ -7,8 +7,8 @@ import { comparePassword, hashPassword } from '@app/utils/crypto'
 import { signSessionToken } from '@app/utils/jwt'
 import { addMilliseconds } from '@app/utils/time.utils'
 
-import { RegisterBodyType } from './register.schema'
 import { LoginBodyType } from './login.schema'
+import { RegisterBodyType } from './register.schema'
 
 export const registerService = async (body: RegisterBodyType) => {
   try {

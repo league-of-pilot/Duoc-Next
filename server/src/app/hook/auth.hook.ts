@@ -1,7 +1,8 @@
+import { FastifyRequest } from 'fastify'
+
 import { COOKIE_MODE } from '@app/const/config.const'
 import { prisma } from '@app/database'
 import { AuthError } from '@app/types/error.class'
-import { FastifyRequest } from 'fastify'
 
 export const getCookieUtils = (request: FastifyRequest) =>
   COOKIE_MODE
