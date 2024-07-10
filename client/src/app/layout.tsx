@@ -4,12 +4,16 @@ import { ROUTE_PATH } from '@/nextApp/route.const'
 import Link from 'next/link'
 import './globals.css'
 import AppProvider from './AppProvider'
+import { cookies } from 'next/headers'
 
 export default function RootLayout({
   children
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const cookieStore = cookies()
+  const sessionToken = cookieStore.get('sessionToken')
+
   return (
     // https://github.com/shadcn/next-contentlayer/issues/7
     // https://ui.shadcn.com/docs/dark-mode/next
@@ -27,7 +31,9 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Link href={ROUTE_PATH.ROOT}>Root Header</Link>
-          <AppProvider>{children}</AppProvider>
+          <AppProvider inititalSessionToken={sessionToken?.value}>
+            {children}
+          </AppProvider>
         </ThemeProvider>
       </body>
     </html>
