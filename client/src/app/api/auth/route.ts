@@ -3,7 +3,7 @@
 // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie
 export async function POST(request: Request) {
   const res = await request.json()
-  const sessionToken = res.data?.token
+  const sessionToken = res.sessionToken as string
 
   const time = new Date().toLocaleTimeString('en-US')
   console.log(`🚀 ${sessionToken.slice(-5)} ${time}`)

@@ -13,10 +13,10 @@ import {
 } from '@/components/ui/form'
 import { Input, InputProps } from '@/components/ui/input'
 import { useToast } from '@/components/ui/use-toast'
-import { API_URL, NEXT_API } from '@/nextApp/api.const'
-import { nativeFetch } from '@/nextApp/fetch.utils'
+import authApiRequest from '@/nextApp/apiRequest/auth.api'
 import { useForm } from 'react-hook-form'
 import { TLoginSchema, loginFormSchema } from './login.schema'
+import { useRouter } from 'next/navigation'
 
 const FormMap: {
   key: keyof TLoginSchema
@@ -43,46 +43,23 @@ const LoginForm = () => {
   const form = useForm<TLoginSchema>(loginFormSchema)
   const { toast } = useToast()
   const { setSessionToken } = useAppContext()
+  const router = useRouter()
 
   async function onSubmit(values: TLoginSchema) {
     try {
-      const [resJson, res] = await nativeFetch.advPost<{
-        message: string
-        data: { token: string }
-      }>(API_URL.AUTH.LOGIN, values)
-      const data = {
-        status: res.status,
-        payload: resJson
-      }
-      if (!res.ok) {
-        throw data
-      }
+      const result = await authApiRequest.login(values)
       toast({
-        description: resJson.message
+        description: result.payload.message
       })
+
       // localStorage.setItem(b'sessionToken', resJson.data.token)
       // ko set localStorage mà sẽ dùng next server trung gian để set ngược cookie từ api trả về
       // cảm giác logic hơi ngớ ngẩn, kiểu đi 2 trip
       // TODO liệu có better solution ko ? server action ?
-      const resultFromNextServer = await fetch(NEXT_API.AUTH, {
-        method: 'POST',
-        body: JSON.stringify(resJson),
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      }).then(async res => {
-        const payload = await res.json()
-        const data = {
-          status: res.status,
-          payload
-        }
-        if (!res.ok) {
-          throw data
-        }
-        return data
-      })
-
-      setSessionToken(resultFromNextServer.payload.data.token)
+      const token = result.payload.data.token
+      await authApiRequest.auth({ sessionToken: token })
+      setSessionToken(token)
+      router.push('/me')
     } catch (error: any) {
       // Error catch có 2 TH -> 1 là parse JSON fail, 2 là error request
       // logic handle Error khá ẩu, tạm skip
