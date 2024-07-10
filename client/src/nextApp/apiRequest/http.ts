@@ -1,7 +1,12 @@
 import envConfig from '@/nextApp/config'
-import { HttpError } from '@/nextApp/nextApp.type'
+import {
+  EntityError,
+  EntityErrorPayload,
+  HttpError
+} from '@/nextApp/nextApp.type'
 import { clientSessionToken } from './sessionToken'
 import { LoginResType } from './auth.schema'
+import { ENTITY_ERROR_STATUS } from '../api.const'
 
 type CustomOptions = Omit<RequestInit, 'method'> & {
   baseUrl?: string
@@ -46,7 +51,16 @@ const request = async <Response>(
     payload
   }
   if (!res.ok) {
-    throw new HttpError(data)
+    if (res.status === ENTITY_ERROR_STATUS) {
+      throw new EntityError(
+        data as {
+          status: 422
+          payload: EntityErrorPayload
+        }
+      )
+    } else {
+      throw new HttpError(data)
+    }
   }
 
   // Cheat interceptor, tạm chấp nhận, tiện set cookie vào obj clientSessionToken
