@@ -57,7 +57,7 @@ export const fastifyCookieOptionsOptional = {
   parseOptions: {} // options for parsing cookies
 } as FastifyCookieOptions
 
-export const COOKIE_MODE = true
+export const COOKIE_MODE = false
 
 export const SESSION_TOKEN_EXPIRES_IN =
   envConfig.SESSION_TOKEN_EXPIRES_IN_HOUR * 60 * 60 * 1000
