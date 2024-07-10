@@ -13,9 +13,10 @@ import {
 import { Input, InputProps } from '@/components/ui/input'
 import { useToast } from '@/components/ui/use-toast'
 import authApiRequest from '@/nextApp/apiRequest/auth.api'
+import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { TRegisterSchema, registerFormSchema } from './register.schema'
-import { useRouter } from 'next/navigation'
+import { handleErrorApi } from '@/nextApp/apiRequest/fetch.utils'
 
 const FormMap: {
   key: keyof TRegisterSchema
@@ -57,13 +58,20 @@ export function RegisterForm() {
   const router = useRouter()
 
   const onSubmit = async (values: TRegisterSchema) => {
-    const result = await authApiRequest.register(values)
-    toast({
-      description: result.payload.message
-    })
-    // register ok thì flow BE trả token về, xem như login luôn
-    await authApiRequest.auth({ sessionToken: result.payload.data.token })
-    router.push('/me')
+    try {
+      const result = await authApiRequest.register(values)
+      toast({
+        description: result.payload.message
+      })
+      // register ok thì flow BE trả token về, xem như login luôn
+      await authApiRequest.auth({ sessionToken: result.payload.data.token })
+      router.push('/me')
+    } catch (error) {
+      handleErrorApi({
+        error,
+        setError: form.setError
+      })
+    }
   }
 
   return (

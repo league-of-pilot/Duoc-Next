@@ -1,13 +1,20 @@
 'use client'
 
 import accountApiRequest from '@/nextApp/apiRequest/account.api'
+import { handleErrorApi } from '@/nextApp/apiRequest/fetch.utils'
 import { useEffect } from 'react'
 
 export default function Profile() {
   useEffect(() => {
     const fetchRequest = async () => {
-      const result = await accountApiRequest.meClient()
-      console.log('🚀 ~ fetchRequest ~ result:', result)
+      try {
+        const result = await accountApiRequest.meClient()
+        console.log('🚀 ~ fetchRequest ~ result:', result)
+      } catch (error) {
+        handleErrorApi({
+          error
+        })
+      }
     }
     fetchRequest()
   }, [])
