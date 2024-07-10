@@ -1,13 +1,12 @@
 'use client'
 
 import accountApiRequest from '@/nextApp/apiRequest/account.api'
-import { clientSessionToken } from '@/nextApp/apiRequest/sessionToken'
 import { useEffect } from 'react'
 
 export default function Profile() {
   useEffect(() => {
     const fetchRequest = async () => {
-      const result = await accountApiRequest.me(clientSessionToken.value)
+      const result = await accountApiRequest.meClient()
       console.log('🚀 ~ fetchRequest ~ result:', result)
     }
     fetchRequest()

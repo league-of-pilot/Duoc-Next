@@ -10,7 +10,8 @@ const accountApiRequest = {
         Authorization: `Bearer ${sessionToken}`
       }
     }),
-  // for Testing only
+  // for Testing only, thực chất chấp nhận api trên string optional,
+  // header sai định dạng thì auto get token từ clientSessionToken
   meClient: () => http.get<AccountResType>(API_URL.ACCOUNT.ME)
 }
 

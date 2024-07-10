@@ -55,8 +55,8 @@ const LoginForm = () => {
       // cảm giác logic hơi ngớ ngẩn, kiểu đi 2 trip
       // TODO liệu có better solution ko ? server action ?
       const token = result.payload.data.token
+      // Đã cheat interceptor set cookie vào luôn
       await authApiRequest.auth({ sessionToken: token })
-      // setSessionToken(token)
       router.push('/me')
     } catch (error: any) {
       // Error catch có 2 TH -> 1 là parse JSON fail, 2 là error request
