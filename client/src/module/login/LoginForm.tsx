@@ -59,7 +59,27 @@ const LoginForm = () => {
       toast({
         description: resJson.message
       })
-      localStorage.setItem('sessionToken', resJson.data.token)
+      // localStorage.setItem(b'sessionToken', resJson.data.token)
+      // ko set localStorage mà sẽ dùng next server trung gian để set ngược cookie từ api trả về
+      // cảm giác logic hơi ngớ ngẩn, kiểu đi 2 trip
+      // TODO liệu có better solution ko ? server action ?
+      const resultFromNextServer = await fetch('/api/auth', {
+        method: 'POST',
+        body: JSON.stringify(resJson),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }).then(async res => {
+        const payload = await res.json()
+        const data = {
+          status: res.status,
+          payload
+        }
+        if (!res.ok) {
+          throw data
+        }
+        return data
+      })
     } catch (error: any) {
       // Error catch có 2 TH -> 1 là parse JSON fail, 2 là error request
       // logic handle Error khá ẩu, tạm skip
