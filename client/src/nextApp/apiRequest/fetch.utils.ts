@@ -1,4 +1,7 @@
 import envConfig from '@/nextApp/config'
+import { UseFormSetError } from 'react-hook-form'
+import { EntityError } from '../nextApp.type'
+import { toast } from '@/components/ui/use-toast'
 
 //   const result = await fetch(
 //     `${envConfig.NEXT_PUBLIC_API_ENDPOINT}/auth/register`,
@@ -41,3 +44,29 @@ class NativeFetch {
 }
 
 export const nativeFetch = new NativeFetch()
+
+export const handleErrorApi = ({
+  error,
+  setError,
+  duration
+}: {
+  error: any
+  setError?: UseFormSetError<any>
+  duration?: number
+}) => {
+  if (error instanceof EntityError && setError) {
+    error.payload.errors.forEach(item => {
+      setError(item.field, {
+        type: 'server',
+        message: item.message
+      })
+    })
+  } else {
+    toast({
+      title: 'Lỗi',
+      description: error?.payload?.message ?? 'Lỗi không xác định',
+      variant: 'destructive',
+      duration: duration ?? 5000
+    })
+  }
+}

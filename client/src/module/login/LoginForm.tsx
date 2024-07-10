@@ -13,9 +13,11 @@ import {
 import { Input, InputProps } from '@/components/ui/input'
 import { useToast } from '@/components/ui/use-toast'
 import authApiRequest from '@/nextApp/apiRequest/auth.api'
+import { handleErrorApi } from '@/nextApp/apiRequest/fetch.utils'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { TLoginSchema, loginFormSchema } from './login.schema'
+import { useState } from 'react'
 
 const FormMap: {
   key: keyof TLoginSchema
@@ -42,8 +44,12 @@ const LoginForm = () => {
   const form = useForm<TLoginSchema>(loginFormSchema)
   const { toast } = useToast()
   const router = useRouter()
+  const [loading, setLoading] = useState(false)
 
   async function onSubmit(values: TLoginSchema) {
+    if (loading) return
+    setLoading(true)
+
     try {
       const result = await authApiRequest.login(values)
       toast({
@@ -59,27 +65,12 @@ const LoginForm = () => {
       await authApiRequest.auth({ sessionToken: token })
       router.push('/me')
     } catch (error: any) {
-      // Error catch có 2 TH -> 1 là parse JSON fail, 2 là error request
-      // logic handle Error khá ẩu, tạm skip
-      const errors = error.payload.errors as {
-        field: string
-        message: string
-      }[]
-      const status = error.status as number
-      if (status === 422) {
-        errors.forEach(error => {
-          form.setError(error.field as 'email' | 'password', {
-            type: 'server',
-            message: error.message
-          })
-        })
-      } else {
-        toast({
-          title: 'Lỗi',
-          description: error.payload.message,
-          variant: 'destructive'
-        })
-      }
+      handleErrorApi({
+        error,
+        setError: form.setError
+      })
+    } finally {
+      setLoading(false)
     }
   }
 
