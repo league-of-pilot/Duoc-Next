@@ -1,5 +1,6 @@
 'use client'
 import { clientSessionToken } from '@/nextApp/apiRequest/sessionToken'
+import { isClient } from '@/nextApp/nextApp.utils'
 import { useLayoutEffect } from 'react'
 
 export default function AppProvider({
@@ -10,7 +11,7 @@ export default function AppProvider({
   inititalSessionToken?: string
 }) {
   useLayoutEffect(() => {
-    if (typeof window !== 'undefined') {
+    if (isClient()) {
       clientSessionToken.value = inititalSessionToken
     }
   }, [inititalSessionToken])

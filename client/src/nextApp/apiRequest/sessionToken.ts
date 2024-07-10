@@ -1,3 +1,5 @@
+import { isClient } from '../nextApp.utils'
+
 class SessionToken {
   private token = ''
   get value() {
@@ -5,7 +7,7 @@ class SessionToken {
   }
   set value(token: string) {
     // Nếu gọi method này ở server thì sẽ bị lỗi
-    if (typeof window === 'undefined') {
+    if (!isClient()) {
       throw new Error('Cannot set token on server side')
     }
     this.token = token

@@ -7,6 +7,8 @@ import {
 import { clientSessionToken } from './sessionToken'
 import { LoginResType } from './auth.schema'
 import { ENTITY_ERROR_STATUS } from '../api.const'
+import { normalizePath } from './fetch.utils'
+import { isClient } from '../nextApp.utils'
 
 type CustomOptions = Omit<RequestInit, 'method'> & {
   baseUrl?: string
@@ -64,10 +66,15 @@ const request = async <Response>(
   }
 
   // Cheat interceptor, tạm chấp nhận, tiện set cookie vào obj clientSessionToken
-  if (['/auth/login', '/auth/register'].includes(url)) {
-    clientSessionToken.value = (payload as LoginResType).data.token
-  } else if ('/auth/logout'.includes(url)) {
-    clientSessionToken.value = ''
+  // Vì utils này dùng ở cả server và client nên cần check DK
+  if (isClient()) {
+    if (
+      ['auth/login', 'auth/register'].some(item => item === normalizePath(url))
+    ) {
+      clientSessionToken.value = (payload as LoginResType).data.token
+    } else if ('auth/logout' === normalizePath(url)) {
+      clientSessionToken.value = ''
+    }
   }
 
   return data
