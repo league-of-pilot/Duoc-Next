@@ -1,7 +1,7 @@
 'use client'
 
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
+import { useAppContext } from '@/app/AppProvider'
+import StaticCheck from '@/components/StaticCheck'
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -12,11 +12,11 @@ import {
   FormMessage
 } from '@/components/ui/form'
 import { Input, InputProps } from '@/components/ui/input'
-import { TLoginSchema, loginFormSchema } from './login.schema'
-import StaticCheck from '@/components/StaticCheck'
-import { nativeFetch } from '@/nextApp/fetch.utils'
-import { API_URL } from '@/nextApp/api.const'
 import { useToast } from '@/components/ui/use-toast'
+import { API_URL } from '@/nextApp/api.const'
+import { nativeFetch } from '@/nextApp/fetch.utils'
+import { useForm } from 'react-hook-form'
+import { TLoginSchema, loginFormSchema } from './login.schema'
 
 const FormMap: {
   key: keyof TLoginSchema
@@ -42,6 +42,7 @@ const FormMap: {
 const LoginForm = () => {
   const form = useForm<TLoginSchema>(loginFormSchema)
   const { toast } = useToast()
+  const { setSessionToken } = useAppContext()
 
   async function onSubmit(values: TLoginSchema) {
     try {
@@ -80,6 +81,8 @@ const LoginForm = () => {
         }
         return data
       })
+
+      setSessionToken(resultFromNextServer.payload.data.token)
     } catch (error: any) {
       // Error catch có 2 TH -> 1 là parse JSON fail, 2 là error request
       // logic handle Error khá ẩu, tạm skip
