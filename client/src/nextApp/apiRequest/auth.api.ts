@@ -13,7 +13,7 @@ const authApiRequest = {
   register: (body: TRegisterSchema) =>
     http.post<RegisterResType>(API_URL.AUTH.REGISTER, body),
 
-  auth: (body: { sessionToken: string }) =>
+  auth: (body: { sessionToken: string; expiresAt: string }) =>
     http.post(NEXT_API.AUTH, body, {
       baseUrl: ''
     }),

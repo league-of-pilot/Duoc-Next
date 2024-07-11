@@ -69,7 +69,10 @@ export function RegisterForm() {
         description: result.payload.message
       })
       // register ok thì flow BE trả token về, xem như login luôn
-      await authApiRequest.auth({ sessionToken: result.payload.data.token })
+      await authApiRequest.auth({
+        sessionToken: result.payload.data.token,
+        expiresAt: result.payload.data.expiresAt
+      })
       router.push('/me')
     } catch (error) {
       handleErrorApi({
