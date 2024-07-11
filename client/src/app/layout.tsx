@@ -5,6 +5,7 @@ import Link from 'next/link'
 import './globals.css'
 import AppProvider from './AppProvider'
 import { cookies } from 'next/headers'
+import SlideSession from '@/module/slideSession/slideSession'
 
 export default function RootLayout({
   children
@@ -33,6 +34,7 @@ export default function RootLayout({
           <Link href={ROUTE_PATH.ROOT}>Root Header</Link>
           <AppProvider inititalSessionToken={sessionToken?.value}>
             {children}
+            <SlideSession />
           </AppProvider>
         </ThemeProvider>
       </body>
