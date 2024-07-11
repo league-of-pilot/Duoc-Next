@@ -1,13 +1,11 @@
 // https://nextjs.org/docs/app/building-your-application/routing/route-handlers
 // https://nextjs.org/docs/app/building-your-application/routing/route-handlers#dynamic-functions
 
-import { PayloadJWT } from '@/nextApp/apiRequest/auth.schema'
-import { decodeJWT } from '@/nextApp/apiRequest/fetch.utils'
-
 // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie
 export async function POST(request: Request) {
   const res = await request.json()
   const sessionToken = res.sessionToken as string
+  const expiresAt = res.expiresAt as string
 
   const time = new Date().toLocaleTimeString('en-US')
   console.log(`🚀 ${sessionToken.slice(-5)} ${time}`)
@@ -21,8 +19,11 @@ export async function POST(request: Request) {
     )
   }
 
-  const payload = decodeJWT<PayloadJWT>(sessionToken)
-  const expiresDate = new Date(payload.exp * 1000).toUTCString()
+  // ko sử dụng giá trị exp cũ từ payload nữa
+  // const payload = decodeJWT<PayloadJWT>(sessionToken)
+  // const expiresDate = new Date(payload.exp * 1000).toUTCString()
+
+  const expiresDate = new Date(expiresAt).toUTCString()
 
   return Response.json(res, {
     status: 200,

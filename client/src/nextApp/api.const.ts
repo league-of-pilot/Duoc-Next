@@ -2,7 +2,8 @@ export const API_URL = {
   AUTH: {
     REGISTER: '/auth/register',
     LOGIN: '/auth/login',
-    LOGOUT: '/auth/logout'
+    LOGOUT: '/auth/logout',
+    SLIDE_SESSION: '/auth/slide-session'
   },
   ACCOUNT: {
     ME: '/account/me'
@@ -11,7 +12,8 @@ export const API_URL = {
 
 export const NEXT_API = {
   AUTH: '/api/auth',
-  AUTH_LOGOUT: '/api/auth/logout'
+  AUTH_LOGOUT: '/api/auth/logout',
+  SLIDE_SESSION: '/api/auth/slide-session'
 }
 
 export const ENTITY_ERROR_STATUS = 422
