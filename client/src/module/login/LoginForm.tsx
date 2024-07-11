@@ -62,7 +62,10 @@ const LoginForm = () => {
       // TODO liệu có better solution ko ? server action ?
       const token = result.payload.data.token
       // Đã cheat interceptor set cookie vào luôn
-      await authApiRequest.auth({ sessionToken: token })
+      await authApiRequest.auth({
+        sessionToken: token,
+        expiresAt: result.payload.data.expiresAt
+      })
       router.push('/me')
     } catch (error: any) {
       handleErrorApi({

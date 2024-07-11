@@ -87,6 +87,9 @@ const request = async <Response>(
         })
         await clientLogoutRequest
         clientSessionToken.value = ''
+
+        clientSessionToken.expiresAt = new Date().toISOString()
+
         // reset flag
         clientLogoutRequest = null
         location.href = '/login'
@@ -123,8 +126,12 @@ const request = async <Response>(
       ['auth/login', 'auth/register'].some(item => item === normalizePath(url))
     ) {
       clientSessionToken.value = (payload as LoginResType).data.token
+
+      // Khi vừa register hoặc login thì set expiresAt về cho client
+      clientSessionToken.expiresAt = (payload as LoginResType).data.expiresAt
     } else if ('auth/logout' === normalizePath(url)) {
       clientSessionToken.value = ''
+      clientSessionToken.expiresAt = new Date().toISOString()
     }
   }
 
