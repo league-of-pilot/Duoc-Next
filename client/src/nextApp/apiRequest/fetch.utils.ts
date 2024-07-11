@@ -2,6 +2,7 @@ import envConfig from '@/nextApp/config'
 import { UseFormSetError } from 'react-hook-form'
 import { EntityError } from '../nextApp.type'
 import { toast } from '@/components/ui/use-toast'
+import jwt from 'jsonwebtoken'
 
 //   const result = await fetch(
 //     `${envConfig.NEXT_PUBLIC_API_ENDPOINT}/auth/register`,
@@ -76,4 +77,8 @@ export const handleErrorApi = ({
  */
 export const normalizePath = (path: string) => {
   return path.startsWith('/') ? path.slice(1) : path
+}
+
+export const decodeJWT = <Payload = any>(token: string) => {
+  return jwt.decode(token) as Payload
 }
