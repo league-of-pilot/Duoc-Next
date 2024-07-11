@@ -4,15 +4,23 @@ import {
   EntityErrorPayload,
   HttpError
 } from '@/nextApp/nextApp.type'
-import { clientSessionToken } from './sessionToken'
-import { LoginResType } from './auth.schema'
-import { ENTITY_ERROR_STATUS } from '../api.const'
-import { normalizePath } from './fetch.utils'
+import {
+  AUTHENTICATION_ERROR_STATUS,
+  ENTITY_ERROR_STATUS,
+  NEXT_API
+} from '../api.const'
 import { isClient } from '../nextApp.utils'
+import { LoginResType } from './auth.schema'
+import { normalizePath } from './fetch.utils'
+import { clientSessionToken } from './sessionToken'
+import { redirect } from 'next/navigation'
 
 type CustomOptions = Omit<RequestInit, 'method'> & {
   baseUrl?: string
 }
+
+// ý tưởng như kiểu useRef, để track khi logout đang gọi, -> ko gọi thêm
+let clientLogoutRequest: null | Promise<any> = null
 
 // private request
 const request = async <Response>(
@@ -60,7 +68,50 @@ const request = async <Response>(
           payload: EntityErrorPayload
         }
       )
+      // Vì http dùng chung cho cả client và server nên code phải xét ở cả 2 TH
+      // Phức tạp cực kì, code rối thêm logic mà ko thật sự đạt performace cao
+      // handle force logout ngay trong http giống như 1 kiểu interceptor
+    } else if (res.status === AUTHENTICATION_ERROR_STATUS) {
+      // có 2 case thi api logout tuỳ thuộc nơi gọi mà sẽ hứng set-Cookie
+      // Nếu từ sv gọi tiếp thì liệu có forward set-Cookie được không?
+      if (isClient()) {
+        // client gọi trực tiếp vào sv BE -> middleware gọi ngầm sv FE
+        // force logout ở client -> check comment trong api Next server client
+        // copy dup code ở đây vì ko muốn circular, hơi dở
+        clientLogoutRequest = fetch(NEXT_API.AUTH_LOGOUT, {
+          method: 'POST',
+          body: JSON.stringify({ force: true }),
+          headers: {
+            ...baseHeaders
+          }
+        })
+        await clientLogoutRequest
+        clientSessionToken.value = ''
+        // reset flag
+        clientLogoutRequest = null
+        location.href = '/login'
+      } else {
+        // logout ở server
+        // sv FE gọi 1 api BE, bị trả 401 -> redirect về route logout
+        // Nếu ko muốn trung gian phải forward set-Cookie về client
+        // Hoặc redirect client về route logout ngầm, sau đó client lại thông qua useEffect gọi sv để xoá cookie -> lòng vòng
+        // Vì route BE ko tự set-Cookie dùm
+        const sessionToken = (options?.headers as any)?.Authorization.split(
+          'Bearer '
+        )[1]
+        redirect(`/logout?sessionToken=${sessionToken}`)
+        // Ý tưởng là ngay đây server next sẽ gọi báo BE logout, rồi trả Response header cho client luôn
+        // Vì code này chạy 2 nợi nên truy cập vào Response được
+        // return Response.json(
+        //   {
+        //     headers: {
+        //       'Set-Cookie': `sessionToken=; Path=/; HttpOnly; Max-Age=0`
+        //     }
+        //   }
+        // )
+      }
     } else {
+      // Chỗ này cần BE handle code chuẩn, hiện chỉ handle 422 zod
       throw new HttpError(data)
     }
   }

@@ -29,12 +29,15 @@ const authApiRequest = {
       }
     ),
 
-  logoutFromNextClientToNextServer: () =>
+  logoutFromNextClientToNextServer: (force?: boolean, signal?: AbortSignal) =>
     http.post<MessageResType>(
       NEXT_API.AUTH_LOGOUT,
-      {},
       {
-        baseUrl: ''
+        force
+      },
+      {
+        baseUrl: '',
+        signal
       }
     )
 }

@@ -24,3 +24,10 @@ export type SlideSessionBodyType = z.TypeOf<typeof SlideSessionBody>
 export const SlideSessionRes = RegisterRes
 
 export type SlideSessionResType = z.TypeOf<typeof SlideSessionRes>
+
+export type PayloadJWT = {
+  iat: number
+  exp: number
+  tokenType: string
+  userId: number
+}
