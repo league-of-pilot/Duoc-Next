@@ -1,6 +1,6 @@
 import { http } from '@/nextApp/apiRequest/http'
 
-import { AccountResType } from './account.schema'
+import { AccountResType, UpdateMeBodyType } from './account.schema'
 import { API_URL } from '../api.const'
 
 const accountApiRequest = {
@@ -12,7 +12,10 @@ const accountApiRequest = {
     }),
   // for Testing only, thực chất chấp nhận api trên string optional,
   // header sai định dạng thì auto get token từ clientSessionToken
-  meClient: () => http.get<AccountResType>(API_URL.ACCOUNT.ME)
+  meClient: () => http.get<AccountResType>(API_URL.ACCOUNT.ME),
+
+  updateMe: (body: UpdateMeBodyType) =>
+    http.put<AccountResType>('account/me', body)
 }
 
 export default accountApiRequest
