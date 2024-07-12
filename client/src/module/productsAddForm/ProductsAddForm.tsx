@@ -10,68 +10,22 @@ import {
   FormMessage
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { useToast } from '@/components/ui/use-toast'
-import { handleErrorApi } from '@/nextApp/apiRequest/fetch.utils'
-import { useRouter } from 'next/navigation'
-import { useRef, useState } from 'react'
-import { useForm } from 'react-hook-form'
-import {
-  CreateProductBodyType,
-  createProductSchema
-} from './ProductsAddForm.schema'
 import { Textarea } from '@/components/ui/textarea'
 import Image from 'next/image'
-import productApiRequest from '@/nextApp/apiRequest/product/product.api'
+import { useRef, useState } from 'react'
+import { useProductForm } from './useProductForm'
 
 const ProductAddForm = () => {
   const [file, setFile] = useState<File | null>(null)
   const inputRef = useRef<HTMLInputElement | null>(null)
 
-  const [loading, setLoading] = useState(false)
-  const { toast } = useToast()
-  const router = useRouter()
-  const form = useForm<CreateProductBodyType>(createProductSchema)
+  const { form, onSubmit } = useProductForm(file)
 
   const deleteFile = () => {
     setFile(null)
     form.setValue('image', '')
     if (inputRef.current) {
       inputRef.current.value = ''
-    }
-  }
-
-  async function onSubmit(values: CreateProductBodyType) {
-    if (loading) return
-    setLoading(true)
-    try {
-      const formData = new FormData()
-      formData.append('file', file as Blob)
-
-      // Logic BE đang xử lý riêng, up file trước, sau đó trả về url,
-      // FE lấy url này gọi tạo file -> ko hay
-      // 2 step tạo form rất dở
-
-      const uploadImageResult = await productApiRequest.uploadImage(formData)
-      const imageUrl = uploadImageResult.payload.data
-
-      const result = await productApiRequest.create({
-        ...values,
-        image: imageUrl
-      })
-
-      toast({
-        description: result.payload.message
-      })
-      router.push('/products')
-      // Buộc hard refresh để tránh cache
-      router.refresh()
-    } catch (error: any) {
-      handleErrorApi({
-        error,
-        setError: form.setError
-      })
-    } finally {
-      setLoading(false)
     }
   }
 
