@@ -7,7 +7,9 @@ export const API_URL = {
   },
   ACCOUNT: {
     ME: '/account/me'
-  }
+  },
+  PRODUCTS: '/products',
+  MEDIA_UPLOAD: '/media/upload'
 }
 
 export const NEXT_API = {
