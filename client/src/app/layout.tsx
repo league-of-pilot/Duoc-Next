@@ -7,14 +7,22 @@ import AppProvider from './AppProvider'
 import { cookies } from 'next/headers'
 import SlideSession from '@/module/slideSession/slideSession'
 import { Toaster } from '@/components/ui/toaster'
+import { AccountResType } from '@/nextApp/apiRequest/account.schema'
+import accountApiRequest from '@/nextApp/apiRequest/account.api'
 
-export default function RootLayout({
+export default async function RootLayout({
   children
 }: Readonly<{
   children: React.ReactNode
 }>) {
   const cookieStore = cookies()
   const sessionToken = cookieStore.get('sessionToken')
+
+  let user: AccountResType['data'] | null = null
+  if (sessionToken) {
+    const data = await accountApiRequest.me(sessionToken.value)
+    user = data.payload.data
+  }
 
   return (
     // https://github.com/shadcn/next-contentlayer/issues/7
@@ -34,7 +42,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Link href={ROUTE_PATH.ROOT}>Root Header</Link>
-          <AppProvider inititalSessionToken={sessionToken?.value}>
+          <AppProvider user={user} inititalSessionToken={sessionToken?.value}>
             {children}
             <SlideSession />
           </AppProvider>
