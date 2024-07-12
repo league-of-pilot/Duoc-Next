@@ -1,5 +1,5 @@
+import ProductAddForm from '@/module/productsAddForm/ProductsAddForm'
 import productApiRequest from '@/nextApp/apiRequest/product/product.api'
-import Image from 'next/image'
 
 export default async function ProductEdit({
   params
@@ -15,20 +15,7 @@ export default async function ProductEdit({
   return (
     <div>
       {!product && <div>Không tìm thấy sản phẩm</div>}
-      {product && (
-        <div>
-          <Image
-            src={product.image}
-            alt={product.name}
-            width={180}
-            height={180}
-            className='w-32 h-32 object-cover'
-          />
-
-          <h3>{product.name}</h3>
-          <div>{product.price}</div>
-        </div>
-      )}
+      {product && <ProductAddForm product={product} />}
     </div>
   )
 }
