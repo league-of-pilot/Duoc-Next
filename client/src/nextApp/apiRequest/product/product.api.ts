@@ -10,9 +10,14 @@ import { MessageResType } from '../common.schema'
 const productApiRequest = {
   // soft navigate back về vẫn đang dính cache
   getList: () =>
-    http.get<ProductListResType>(API_URL.PRODUCTS, {
-      cache: 'no-store'
-    }),
+    http.get<ProductListResType>(
+      API_URL.PRODUCTS
+      //Nếu gỡ cache ra -> page productList sẽ thành static rendering
+      // Tuy nhiên logic check localStorage sẽ phải cần check isClient thêm
+      // {
+      //   cache: 'no-store'
+      // }
+    ),
   create: (body: CreateProductBodyType) =>
     http.post<ProductResType>(API_URL.PRODUCTS, body),
 

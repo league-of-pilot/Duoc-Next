@@ -38,6 +38,11 @@ export const clientSessionToken = new SessionToken()
 
 export const getLocalStorageToken = () => localStorage.getItem('sessionToken')
 
+export const getClientLocalToken = () =>
+  isClient()
+    ? ([getLocalStorageToken(), true] as const)
+    : ([null, false] as const)
+
 export const getLocalTokenExpired = () => {
   const sessionTokenExpiresAt = localStorage.getItem('sessionTokenExpiresAt')
   const expiresAt = sessionTokenExpiresAt

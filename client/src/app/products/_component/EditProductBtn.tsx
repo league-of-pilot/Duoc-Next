@@ -1,7 +1,7 @@
 'use client'
 import { Button } from '@/components/ui/button'
 import { ProductListResType } from '@/nextApp/apiRequest/product/product.schema'
-import { getLocalStorageToken } from '@/nextApp/apiRequest/sessionToken'
+import { getClientLocalToken } from '@/nextApp/apiRequest/sessionToken'
 import { ROUTE_PATH } from '@/nextApp/route.const'
 import Link from 'next/link'
 import DeleteProduct from './DeleteProduct'
@@ -12,8 +12,8 @@ type TEditProductBtn = {
 export default function EditProductBtn({ product }: TEditProductBtn) {
   // Vì logic Auth hoàn toàn nằm ở localStorage client
   // trên SSR xem như ko có thông tin cookie nữa
-  const isAuthenticated = Boolean(getLocalStorageToken())
-  if (!isAuthenticated) return null
+  const [clientToken] = getClientLocalToken()
+  if (!clientToken) return null
 
   return (
     <div className='flex space-x-2 items-start'>
