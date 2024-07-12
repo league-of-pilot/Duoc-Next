@@ -1,6 +1,11 @@
 import Profile from '@/module/profile/Profile'
 import accountApiRequest from '@/nextApp/apiRequest/account.api'
+import { Metadata } from 'next'
 import { cookies } from 'next/headers'
+
+export const metadata: Metadata = {
+  title: 'Hồ sơ người dùng'
+}
 
 export default async function MeProfile() {
   const cookieStore = cookies()

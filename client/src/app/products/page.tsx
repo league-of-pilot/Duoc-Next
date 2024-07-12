@@ -5,6 +5,12 @@ import Image from 'next/image'
 import Link from 'next/link'
 import DeleteProduct from './_component/DeleteProduct'
 import { cookies } from 'next/headers'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Danh sách sản phẩm',
+  description: 'Danh sách sản phẩm của Productic, được tạo bởi Được dev'
+}
 
 export default async function ProductListPage() {
   const { payload } = await productApiRequest.getList()
