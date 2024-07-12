@@ -31,3 +31,39 @@ class SessionToken {
 }
 
 export const clientSessionToken = new SessionToken()
+
+// ===========================
+// Local storage token
+// ===========================
+
+export const getLocalStorageToken = () => localStorage.getItem('sessionToken')
+
+export const getLocalTokenExpired = () => {
+  const sessionTokenExpiresAt = localStorage.getItem('sessionTokenExpiresAt')
+  const expiresAt = sessionTokenExpiresAt
+    ? new Date(sessionTokenExpiresAt)
+    : new Date()
+
+  return [expiresAt, sessionTokenExpiresAt] as const
+}
+
+export const setLocalTokenExpired = (exp: string) =>
+  localStorage.setItem('sessionTokenExpiresAt', exp)
+
+// ko cần thiết
+// class LocalStorageToken {
+//   getToken() {
+//     return localStorage.getItem('sessionToken')
+//   }
+
+//   setToken(token: string) {
+//     localStorage.setItem('sessionToken', token)
+//   }
+
+//   getExpiresAt() {
+//     return localStorage.getItem('sessionTokenExpiresAt')
+//   }
+//   setExpiresAt(expiresAt: string) {
+//     localStorage.setItem('sessionTokenExpiresAt', expiresAt)
+//   }
+// }
