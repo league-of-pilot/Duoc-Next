@@ -16,3 +16,12 @@ export const ProductRes = z.object({
 })
 
 export type ProductResType = z.TypeOf<typeof ProductRes>
+
+// Product List
+
+export const ProductListRes = z.object({
+  data: z.array(ProductSchema),
+  message: z.string()
+})
+
+export type ProductListResType = z.TypeOf<typeof ProductListRes>
