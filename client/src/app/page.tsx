@@ -1,6 +1,12 @@
 import { FAKE_IS_AUTH } from '@/nextApp/route.const'
 import ButtonRedirect from '../components/ButtonRedirect'
 import NavHeader from '../components/NavHeader'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Trang chủ',
+  description: 'Trang chủ của Productic, được tạo bởi Được dev'
+}
 
 export default function Home() {
   return (

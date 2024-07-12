@@ -1,6 +1,14 @@
 import Profile from '@/module/profile/Profile'
 import accountApiRequest from '@/nextApp/apiRequest/account.api'
+import { Metadata } from 'next'
 import { cookies } from 'next/headers'
+
+// Chú ý metaData sẽ merge nhau
+// Cấp sâu nhát ưu tiên cao nhất
+// ko merge nested object vd openGraph
+export const metadata: Metadata = {
+  title: 'Hồ sơ người dùng'
+}
 
 export default async function MeProfile() {
   const cookieStore = cookies()

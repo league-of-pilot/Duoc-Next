@@ -9,6 +9,18 @@ import SlideSession from '@/module/slideSession/slideSession'
 import { Toaster } from '@/components/ui/toaster'
 import { AccountResType } from '@/nextApp/apiRequest/account.schema'
 import accountApiRequest from '@/nextApp/apiRequest/account.api'
+import { Metadata } from 'next'
+import { baseOpenGraph } from './shared-metadata'
+
+// https://nextjs.org/docs/app/api-reference/functions/generate-metadata#template
+export const metadata: Metadata = {
+  title: {
+    template: '%s | Productic',
+    default: 'Productic'
+  },
+  description: 'Được tạo bởi Được dev',
+  openGraph: baseOpenGraph
+}
 
 export default async function RootLayout({
   children

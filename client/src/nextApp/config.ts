@@ -26,7 +26,8 @@ import { z } from 'zod'
 const envConfig = {
   NEXT_PUBLIC_API_ENDPOINT: z
     .string()
-    .parse(process.env.NEXT_PUBLIC_API_ENDPOINT)
+    .parse(process.env.NEXT_PUBLIC_API_ENDPOINT),
+  NEXT_PUBLIC_URL: z.string().parse(process.env.NEXT_PUBLIC_URL)
 }
 export default envConfig
 
