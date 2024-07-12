@@ -4,11 +4,18 @@ import { http } from '../http'
 import { ProductListResType, ProductResType } from './product.schema'
 
 const productApiRequest = {
-  getList: () => http.get<ProductListResType>(API_URL.PRODUCTS),
+  // soft navigate back về vẫn đang dính cache
+  getList: () =>
+    http.get<ProductListResType>(API_URL.PRODUCTS, {
+      cache: 'no-store'
+    }),
   create: (body: CreateProductBodyType) =>
     http.post<ProductResType>(API_URL.PRODUCTS, body),
 
-  getDetail: (id: number) => http.get<ProductResType>(`/products/${id}`),
+  getDetail: (id: number) =>
+    http.get<ProductResType>(`/products/${id}`, {
+      cache: 'no-store'
+    }),
 
   uploadImage: (body: FormData) =>
     http.post<{
