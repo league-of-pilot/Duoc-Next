@@ -4,17 +4,16 @@ import {
   EntityErrorPayload,
   HttpError
 } from '@/nextApp/nextApp.type'
+import { redirect } from 'next/navigation'
 import {
   AUTHENTICATION_ERROR_STATUS,
   ENTITY_ERROR_STATUS,
   NEXT_API
 } from '../api.const'
 import { isClient } from '../nextApp.utils'
+import { ROUTE_PATH } from '../route.const'
 import { LoginResType } from './auth.schema'
 import { normalizePath } from './fetch.utils'
-import { clientSessionToken } from './sessionToken'
-import { redirect } from 'next/navigation'
-import { ROUTE_PATH } from '../route.const'
 
 type CustomOptions = Omit<RequestInit, 'method'> & {
   baseUrl?: string
@@ -29,26 +28,28 @@ const request = async <Response>(
   url: string,
   options?: CustomOptions | undefined
 ) => {
-  const body = options?.body
-    ? options.body instanceof FormData
-      ? options.body
-      : JSON.stringify(options.body)
-    : undefined
+  let body: FormData | string | undefined = undefined
+  if (options?.body instanceof FormData) {
+    body = options.body
+  } else if (options?.body) {
+    body = JSON.stringify(options.body)
+  }
 
-  const baseHeaders: HeadersInit =
+  const baseHeaders: {
+    [key: string]: string
+  } =
     body instanceof FormData
-      ? {
-          Authorization: clientSessionToken.value
-            ? `Bearer ${clientSessionToken.value}`
-            : ''
-        }
+      ? {}
       : {
-          'Content-Type': 'application/json',
-          Authorization: clientSessionToken.value
-            ? `Bearer ${clientSessionToken.value}`
-            : ''
+          'Content-Type': 'application/json'
         }
 
+  if (isClient()) {
+    const sessionToken = localStorage.getItem('sessionToken')
+    if (sessionToken) {
+      baseHeaders.Authorization = `Bearer ${sessionToken}`
+    }
+  }
   // Nếu không truyền baseUrl (hoặc baseUrl = undefined) thì lấy từ envConfig.NEXT_PUBLIC_API_ENDPOINT
   // Nếu truyền baseUrl thì lấy giá trị truyền vào, truyền vào '' thì đồng nghĩa với việc chúng ta gọi API đến Next.js Server
   const baseUrl =
@@ -98,14 +99,18 @@ const request = async <Response>(
             ...baseHeaders
           }
         })
-        await clientLogoutRequest
-        clientSessionToken.value = ''
+        try {
+          await clientLogoutRequest
+        } catch (error) {
+          console.log('🚀 http L106-error', error)
+        } finally {
+          localStorage.removeItem('sessionToken')
+          localStorage.removeItem('sessionTokenExpiresAt')
 
-        clientSessionToken.expiresAt = new Date().toISOString()
-
-        // reset flag
-        clientLogoutRequest = null
-        location.href = ROUTE_PATH.LOGIN
+          // reset flag
+          clientLogoutRequest = null
+          location.href = ROUTE_PATH.LOGIN
+        }
       } else {
         // logout ở server
         // sv FE gọi 1 api BE, bị trả 401 -> redirect về route logout
@@ -138,13 +143,12 @@ const request = async <Response>(
     if (
       ['auth/login', 'auth/register'].some(item => item === normalizePath(url))
     ) {
-      clientSessionToken.value = (payload as LoginResType).data.token
-
-      // Khi vừa register hoặc login thì set expiresAt về cho client
-      clientSessionToken.expiresAt = (payload as LoginResType).data.expiresAt
+      const { token, expiresAt } = (payload as LoginResType).data
+      localStorage.setItem('sessionToken', token)
+      localStorage.setItem('sessionTokenExpiresAt', expiresAt)
     } else if ('auth/logout' === normalizePath(url)) {
-      clientSessionToken.value = ''
-      clientSessionToken.expiresAt = new Date().toISOString()
+      localStorage.removeItem('sessionToken')
+      localStorage.removeItem('sessionTokenExpiresAt')
     }
   }
 

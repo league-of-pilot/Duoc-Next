@@ -1,15 +1,13 @@
 import { ThemeProvider } from '@/components/ThemeProvider'
+import { Toaster } from '@/components/ui/toaster'
+import SlideSession from '@/module/slideSession/slideSession'
+import { AccountResType } from '@/nextApp/apiRequest/account.schema'
 import { interFont } from '@/nextApp/font/next.font'
 import { ROUTE_PATH } from '@/nextApp/route.const'
-import Link from 'next/link'
-import './globals.css'
-import AppProvider from './AppProvider'
-import { cookies } from 'next/headers'
-import SlideSession from '@/module/slideSession/slideSession'
-import { Toaster } from '@/components/ui/toaster'
-import { AccountResType } from '@/nextApp/apiRequest/account.schema'
-import accountApiRequest from '@/nextApp/apiRequest/account.api'
 import { Metadata } from 'next'
+import Link from 'next/link'
+import AppProvider from './AppProvider'
+import './globals.css'
 import { baseOpenGraph } from './shared-metadata'
 
 // https://nextjs.org/docs/app/api-reference/functions/generate-metadata#template
@@ -27,14 +25,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const cookieStore = cookies()
-  const sessionToken = cookieStore.get('sessionToken')
-
   let user: AccountResType['data'] | null = null
-  if (sessionToken) {
-    const data = await accountApiRequest.me(sessionToken.value)
-    user = data.payload.data
-  }
 
   return (
     // https://github.com/shadcn/next-contentlayer/issues/7
@@ -54,7 +45,7 @@ export default async function RootLayout({
           disableTransitionOnChange
         >
           <Link href={ROUTE_PATH.ROOT}>Root Header</Link>
-          <AppProvider user={user} inititalSessionToken={sessionToken?.value}>
+          <AppProvider user={user}>
             {children}
             <SlideSession />
           </AppProvider>

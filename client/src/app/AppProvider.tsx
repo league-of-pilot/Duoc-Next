@@ -1,14 +1,6 @@
 'use client'
 import { AccountResType } from '@/nextApp/apiRequest/account.schema'
-import { clientSessionToken } from '@/nextApp/apiRequest/sessionToken'
-import { isClient } from '@/nextApp/nextApp.utils'
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useLayoutEffect,
-  useState
-} from 'react'
+import { createContext, useContext, useState } from 'react'
 
 type User = AccountResType['data']
 type TAppContext = {
@@ -27,23 +19,24 @@ export const useAppContext = () => {
   return context
 }
 
+type TAppProvider = {
+  children: React.ReactNode
+  user: User | null
+  // inititalSessionToken?: string
+}
+
 export default function AppProvider({
   children,
-  inititalSessionToken = '',
   user: userProp
-}: {
-  children: React.ReactNode
-  inititalSessionToken?: string
-  user: User | null
-}) {
+}: TAppProvider) {
   const [user, setUser] = useState<User | null>(userProp)
 
   // Khá tệ, lyaout chạy set value nhưng button logout lại chạy trước, truy cập vào value trước khi được set
-  useLayoutEffect(() => {
-    if (isClient()) {
-      clientSessionToken.value = inititalSessionToken
-    }
-  }, [inititalSessionToken])
+  // useLayoutEffect(() => {
+  //   if (isClient()) {
+  //     clientSessionToken.value = inititalSessionToken
+  //   }
+  // }, [inititalSessionToken])
 
   return (
     <AppContext.Provider

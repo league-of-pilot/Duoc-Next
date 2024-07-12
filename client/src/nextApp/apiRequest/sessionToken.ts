@@ -1,5 +1,7 @@
 import { isClient } from '../nextApp.utils'
 
+// ko sử dụng class này nữa vì sẽ qua localStorage
+// để lại tham khảo, bản thân việc dùng class ko control được thứ tự component truy cập, ko force render lại được
 class SessionToken {
   private token = ''
   private _expiresAt = new Date().toISOString()
