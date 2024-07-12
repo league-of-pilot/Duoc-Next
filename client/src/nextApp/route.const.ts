@@ -6,7 +6,8 @@ export const ROUTE_PATH = {
   PROFILE_EDIT: '/edit-profile',
   PRODUCTS_ADD: '/products/add',
   PRODUCTS_LIST: '/products',
-  PRODUCT_EDIT: (id: string) => `/products/${id}`,
+  PRODUCT_DETAIL: (id: string | number) => `/products/${id}`,
+  PRODUCT_EDIT: (id: string | number) => `/products/${id}/edit`,
   DEMO_IMG: '/demoImg'
 } as const
 

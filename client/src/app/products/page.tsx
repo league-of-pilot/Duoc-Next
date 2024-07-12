@@ -21,7 +21,7 @@ export default async function ProductListPage() {
       <h1>Product List</h1>
 
       {isAuthenticated && (
-        <Link href={'/products/add'}>
+        <Link href={ROUTE_PATH.PRODUCTS_ADD}>
           <Button variant={'secondary'}>Thêm sản phẩm</Button>
         </Link>
       )}
@@ -29,20 +29,22 @@ export default async function ProductListPage() {
       <div className='space-y-5'>
         {productList.map(product => (
           <div key={product.id} className='flex space-x-4'>
-            <Image
-              // url ngoài nên phải cấu hình Next config
-              src={product.image}
-              alt={product.name}
-              // Set tạm value
-              width={180}
-              height={180}
-              className='w-32 h-32 object-cover'
-            />
+            <Link href={ROUTE_PATH.PRODUCT_DETAIL(product.id)}>
+              <Image
+                // url ngoài nên phải cấu hình Next config
+                src={product.image}
+                alt={product.name}
+                // Set tạm value
+                width={180}
+                height={180}
+                className='w-32 h-32 object-cover'
+              />
+            </Link>
             <h3>{product.name}</h3>
             <div>{product.price}</div>
             {isAuthenticated && (
               <div className='flex space-x-2 items-start'>
-                <Link href={`/products/${product.id}`}>
+                <Link href={ROUTE_PATH.PRODUCT_EDIT(product.id)}>
                   <Button variant={'outline'}>Edit</Button>
                 </Link>
                 <DeleteProduct product={product} />

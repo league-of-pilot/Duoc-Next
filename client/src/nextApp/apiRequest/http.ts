@@ -14,6 +14,7 @@ import { LoginResType } from './auth.schema'
 import { normalizePath } from './fetch.utils'
 import { clientSessionToken } from './sessionToken'
 import { redirect } from 'next/navigation'
+import { ROUTE_PATH } from '../route.const'
 
 type CustomOptions = Omit<RequestInit, 'method'> & {
   baseUrl?: string
@@ -104,7 +105,7 @@ const request = async <Response>(
 
         // reset flag
         clientLogoutRequest = null
-        location.href = '/login'
+        location.href = ROUTE_PATH.LOGIN
       } else {
         // logout ở server
         // sv FE gọi 1 api BE, bị trả 401 -> redirect về route logout

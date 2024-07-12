@@ -10,6 +10,7 @@ import {
 import productApiRequest from '@/nextApp/apiRequest/product/product.api'
 import { handleErrorApi } from '@/nextApp/apiRequest/fetch.utils'
 import { ProductResType } from '@/nextApp/apiRequest/product/product.schema'
+import { ROUTE_PATH } from '@/nextApp/route.const'
 
 export const useProductForm = (
   file: File | null,
@@ -42,7 +43,7 @@ export const useProductForm = (
       toast({
         description: result.payload.message
       })
-      router.push('/products')
+      router.push(ROUTE_PATH.PRODUCTS_LIST)
       // Buộc hard refresh để tránh cache
       router.refresh()
     } catch (error: any) {
