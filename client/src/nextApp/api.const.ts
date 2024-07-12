@@ -9,6 +9,7 @@ export const API_URL = {
     ME: '/account/me'
   },
   PRODUCTS: '/products',
+  PRODUCT_ID: (id: number | string) => `/products/${id}`,
   MEDIA_UPLOAD: '/media/upload'
 }
 

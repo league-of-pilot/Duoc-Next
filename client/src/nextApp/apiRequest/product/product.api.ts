@@ -5,6 +5,7 @@ import {
 import { API_URL } from '@/nextApp/api.const'
 import { http } from '../http'
 import { ProductListResType, ProductResType } from './product.schema'
+import { MessageResType } from '../common.schema'
 
 const productApiRequest = {
   // soft navigate back về vẫn đang dính cache
@@ -16,18 +17,20 @@ const productApiRequest = {
     http.post<ProductResType>(API_URL.PRODUCTS, body),
 
   getDetail: (id: number) =>
-    http.get<ProductResType>(`/products/${id}`, {
+    http.get<ProductResType>(API_URL.PRODUCT_ID(id), {
       cache: 'no-store'
     }),
 
   update: (id: number, body: UpdateProductBodyType) =>
-    http.put<ProductResType>(`/products/${id}`, body),
+    http.put<ProductResType>(API_URL.PRODUCT_ID(id), body),
 
   uploadImage: (body: FormData) =>
     http.post<{
       message: string
       data: string
-    }>(API_URL.MEDIA_UPLOAD, body)
+    }>(API_URL.MEDIA_UPLOAD, body),
+
+  delete: (id: number) => http.delete<MessageResType>(API_URL.PRODUCT_ID(id))
 }
 
 export default productApiRequest

@@ -15,7 +15,7 @@ const accountApiRequest = {
   meClient: () => http.get<AccountResType>(API_URL.ACCOUNT.ME),
 
   updateMe: (body: UpdateMeBodyType) =>
-    http.put<AccountResType>('account/me', body)
+    http.put<AccountResType>(API_URL.ACCOUNT.ME, body)
 }
 
 export default accountApiRequest
