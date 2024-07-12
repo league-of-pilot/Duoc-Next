@@ -3,6 +3,7 @@ import productApiRequest from '@/nextApp/apiRequest/product/product.api'
 import { ROUTE_PATH } from '@/nextApp/route.const'
 import Image from 'next/image'
 import Link from 'next/link'
+import DeleteProduct from './_component/DeleteProduct'
 
 export default async function ProductListPage() {
   const { payload } = await productApiRequest.getList()
@@ -32,11 +33,11 @@ export default async function ProductListPage() {
             />
             <h3>{product.name}</h3>
             <div>{product.price}</div>
-            <div className='flex space-x-2'>
+            <div className='flex space-x-2 items-start'>
               <Link href={ROUTE_PATH.PRODUCT_EDIT(product.id.toString())}>
                 <Button variant={'outline'}>Edit</Button>
               </Link>
-              <Button variant={'destructive'}>Delete</Button>
+              <DeleteProduct product={product} />
             </div>
           </div>
         ))}
