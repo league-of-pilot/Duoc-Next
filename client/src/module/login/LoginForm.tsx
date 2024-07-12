@@ -67,6 +67,7 @@ const LoginForm = () => {
         expiresAt: result.payload.data.expiresAt
       })
       router.push('/me')
+      router.refresh()
     } catch (error: any) {
       handleErrorApi({
         error,
