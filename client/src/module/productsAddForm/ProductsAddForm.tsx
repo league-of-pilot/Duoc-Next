@@ -63,6 +63,8 @@ const ProductAddForm = () => {
         description: result.payload.message
       })
       router.push('/products')
+      // Buộc hard refresh để tránh cache
+      router.refresh()
     } catch (error: any) {
       handleErrorApi({
         error,

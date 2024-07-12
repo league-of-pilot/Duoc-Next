@@ -5,6 +5,8 @@ export const ROUTE_PATH = {
   ME: '/me',
   PROFILE_EDIT: '/edit-profile',
   PRODUCTS_ADD: '/products/add',
+  PRODUCTS_LIST: '/products',
+  PRODUCT_EDIT: (id: string) => `/products/${id}`,
   DEMO_IMG: '/demoImg'
 } as const
 
@@ -15,6 +17,7 @@ export const NAV_CONST = [
   { path: ROUTE_PATH.ME, name: 'my profile' },
   { path: ROUTE_PATH.PROFILE_EDIT, name: 'edit profile' },
   { path: ROUTE_PATH.PRODUCTS_ADD, name: 'add product' },
+  { path: ROUTE_PATH.PRODUCTS_LIST, name: 'list products' },
   { path: ROUTE_PATH.DEMO_IMG, name: 'Demo Img' }
 ]
 
