@@ -15,7 +15,6 @@ export default function AuthLayout({
         <div>
           <Link href={ROUTE_PATH.ROOT}>Back to Home</Link>
         </div>
-        <Toaster />
       </div>
       {children}
     </div>

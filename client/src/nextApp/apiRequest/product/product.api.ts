@@ -1,11 +1,10 @@
-import { CreateProductBodyType } from '@/module/productsAddForm/ProductsAddForm.schema'
+import {
+  CreateProductBodyType,
+  UpdateProductBodyType
+} from '@/module/productsAddForm/ProductsAddForm.schema'
 import { API_URL } from '@/nextApp/api.const'
 import { http } from '../http'
-import {
-  ProductListResType,
-  ProductResType,
-  UpdateProductBodyType
-} from './product.schema'
+import { ProductListResType, ProductResType } from './product.schema'
 
 const productApiRequest = {
   // soft navigate back về vẫn đang dính cache

@@ -14,12 +14,18 @@ import { Textarea } from '@/components/ui/textarea'
 import Image from 'next/image'
 import { useRef, useState } from 'react'
 import { useProductForm } from './useProductForm'
+import { ProductResType } from '@/nextApp/apiRequest/product/product.schema'
 
-const ProductAddForm = () => {
+type TProductAddForm = {
+  product?: ProductResType['data']
+}
+
+const ProductAddForm = ({ product }: TProductAddForm) => {
   const [file, setFile] = useState<File | null>(null)
   const inputRef = useRef<HTMLInputElement | null>(null)
 
-  const { form, onSubmit } = useProductForm(file)
+  const { form, onSubmit, loading } = useProductForm(file, product)
+  const image = form.watch('image')
 
   const deleteFile = () => {
     setFile(null)
@@ -112,10 +118,10 @@ const ProductAddForm = () => {
           )}
         />
 
-        {file && (
+        {(file || image) && (
           <div>
             <Image
-              src={URL.createObjectURL(file)}
+              src={file ? URL.createObjectURL(file) : image}
               width={128}
               height={128}
               alt='preview'
@@ -133,8 +139,8 @@ const ProductAddForm = () => {
           </div>
         )}
 
-        <Button type='submit' className='!mt-8 w-full'>
-          Thên sản phẩm
+        <Button type='submit' className='!mt-8 w-full' disabled={loading}>
+          {product ? 'Cập nhật sản phẩm' : 'Thêm sản phẩm'}
         </Button>
       </form>
     </Form>

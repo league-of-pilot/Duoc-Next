@@ -6,6 +6,7 @@ import './globals.css'
 import AppProvider from './AppProvider'
 import { cookies } from 'next/headers'
 import SlideSession from '@/module/slideSession/slideSession'
+import { Toaster } from '@/components/ui/toaster'
 
 export default function RootLayout({
   children
@@ -25,6 +26,7 @@ export default function RootLayout({
       {/* Nếu Header đặt ngoài body sẽ lỗi hydrate ?? */}
       {/* https://nextjs.org/docs/app/building-your-application/routing/pages-and-layouts#root-layout-required */}
       <body className={interFont.className}>
+        <Toaster />
         <ThemeProvider
           attribute='class'
           defaultTheme='system'
