@@ -10,12 +10,21 @@ export const CreateProductBody = z.object({
 
 export type CreateProductBodyType = z.TypeOf<typeof CreateProductBody>
 
-export const createProductSchema = {
-  resolver: zodResolver(CreateProductBody),
-  defaultValues: {
-    name: '',
-    price: 0,
-    description: '',
-    image: ''
+// Edit Product
+
+export const UpdateProductBody = CreateProductBody
+export type UpdateProductBodyType = CreateProductBodyType
+
+export const createProductSchema = (product?: UpdateProductBodyType) => {
+  const defaultValues = {
+    name: product?.name ?? '',
+    price: product?.price ?? 0,
+    description: product?.description ?? '',
+    image: product?.image ?? ''
+  }
+
+  return {
+    resolver: zodResolver(CreateProductBody),
+    defaultValues
   }
 }

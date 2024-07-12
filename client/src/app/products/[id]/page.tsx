@@ -1,3 +1,4 @@
+import ProductAddForm from '@/module/productsAddForm/ProductsAddForm'
 import productApiRequest from '@/nextApp/apiRequest/product/product.api'
 
 export default async function ProductEdit({
@@ -14,7 +15,7 @@ export default async function ProductEdit({
   return (
     <div>
       {!product && <div>Không tìm thấy sản phẩm</div>}
-      {product && <div>{product.name}</div>}
+      {product && <ProductAddForm product={product} />}
     </div>
   )
 }
