@@ -1,14 +1,16 @@
 'use client'
 
+import { useAppContext } from '@/app/AppProvider'
 import { Button } from '@/components/ui/button'
 import authApiRequest from '@/nextApp/apiRequest/auth.api'
 import { handleErrorApi } from '@/nextApp/apiRequest/fetch.utils'
-import { clientSessionToken } from '@/nextApp/apiRequest/sessionToken'
+import { removeLocalStorageToken } from '@/nextApp/apiRequest/sessionToken'
 import { usePathname, useRouter } from 'next/navigation'
 
 export default function ButtonLogout() {
   const router = useRouter()
   const pathname = usePathname()
+  const { user, setUser } = useAppContext()
 
   const handleLogout = async () => {
     try {
@@ -23,11 +25,15 @@ export default function ButtonLogout() {
         router.push(`/login?redirectFrom=${pathname}`)
       })
     } finally {
+      setUser(null)
+      removeLocalStorageToken()
       router.refresh()
     }
   }
-  console.log('🚀 button-logout', clientSessionToken.value.slice(-5))
-  return !clientSessionToken.value ? (
+  // console.log('🚀 button-logout', clientSessionToken.value.slice(-5))
+  // Bắt buộc phải quy về AppContext, nếu dùng localStorage thì build ở SSR sẽ fail
+  // Hoặc phải check thêm isClient
+  return !user ? (
     <h1>NoLogout</h1>
   ) : (
     <Button size={'sm'} onClick={handleLogout}>

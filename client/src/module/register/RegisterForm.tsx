@@ -1,5 +1,6 @@
 'use client'
 
+import { useAppContext } from '@/app/AppProvider'
 import StaticCheck from '@/components/StaticCheck'
 import { Button } from '@/components/ui/button'
 import {
@@ -13,11 +14,11 @@ import {
 import { Input, InputProps } from '@/components/ui/input'
 import { useToast } from '@/components/ui/use-toast'
 import authApiRequest from '@/nextApp/apiRequest/auth.api'
+import { handleErrorApi } from '@/nextApp/apiRequest/fetch.utils'
 import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { TRegisterSchema, registerFormSchema } from './register.schema'
-import { handleErrorApi } from '@/nextApp/apiRequest/fetch.utils'
-import { useState } from 'react'
 
 const FormMap: {
   key: keyof TRegisterSchema
@@ -58,6 +59,7 @@ export function RegisterForm() {
   const { toast } = useToast()
   const router = useRouter()
   const [loading, setLoading] = useState(false)
+  const { setUser } = useAppContext()
 
   const onSubmit = async (values: TRegisterSchema) => {
     if (loading) return
@@ -73,6 +75,7 @@ export function RegisterForm() {
         sessionToken: result.payload.data.token,
         expiresAt: result.payload.data.expiresAt
       })
+      setUser(result.payload.data.account)
       router.push('/me')
     } catch (error) {
       handleErrorApi({

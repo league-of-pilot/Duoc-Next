@@ -1,11 +1,11 @@
 'use client'
 
 import authApiRequest from '@/nextApp/apiRequest/auth.api'
-import { clientSessionToken } from '@/nextApp/apiRequest/sessionToken'
+import { getLocalStorageToken } from '@/nextApp/apiRequest/sessionToken'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
-import { useEffect } from 'react'
+import { Suspense, useEffect } from 'react'
 
-export default function Logout() {
+function LogoutLogic() {
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
@@ -16,7 +16,7 @@ export default function Logout() {
     const signal = controller.signal
 
     // Phải check sessionToken Next sv và client có match ko
-    if (sessionToken === clientSessionToken.value) {
+    if (sessionToken === getLocalStorageToken()) {
       authApiRequest.logoutFromNextClientToNextServer(true, signal).then(_ => {
         router.push(`/login?redirectFrom=${pathname}`)
       })
@@ -26,4 +26,14 @@ export default function Logout() {
     }
   }, [sessionToken, router, pathname])
   return <div>page</div>
+}
+
+// build sẽ báo error
+// https://nextjs.org/docs/messages/missing-suspense-with-csr-bailout
+export default function LogoutPage() {
+  return (
+    <Suspense>
+      <LogoutLogic />
+    </Suspense>
+  )
 }
