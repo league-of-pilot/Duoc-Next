@@ -2,7 +2,6 @@
 
 import { SLIDE_INTERVAL } from '@/nextApp/api.const'
 import {
-  clientSessionToken,
   getLocalTokenExpired,
   setLocalTokenExpired
 } from '@/nextApp/apiRequest/sessionToken'

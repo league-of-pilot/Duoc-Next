@@ -45,7 +45,7 @@ export default async function RootLayout({
           disableTransitionOnChange
         >
           <Link href={ROUTE_PATH.ROOT}>Root Header</Link>
-          <AppProvider user={user}>
+          <AppProvider>
             {children}
             <SlideSession />
           </AppProvider>

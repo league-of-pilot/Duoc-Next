@@ -14,6 +14,12 @@ import { isClient } from '../nextApp.utils'
 import { ROUTE_PATH } from '../route.const'
 import { LoginResType } from './auth.schema'
 import { normalizePath } from './fetch.utils'
+import {
+  getLocalStorageToken,
+  removeLocalStorageToken,
+  setLocalStorageToken,
+  setLocalTokenExpired
+} from './sessionToken'
 
 type CustomOptions = Omit<RequestInit, 'method'> & {
   baseUrl?: string
@@ -45,7 +51,7 @@ const request = async <Response>(
         }
 
   if (isClient()) {
-    const sessionToken = localStorage.getItem('sessionToken')
+    const sessionToken = getLocalStorageToken()
     if (sessionToken) {
       baseHeaders.Authorization = `Bearer ${sessionToken}`
     }
@@ -104,9 +110,7 @@ const request = async <Response>(
         } catch (error) {
           console.log('🚀 http L106-error', error)
         } finally {
-          localStorage.removeItem('sessionToken')
-          localStorage.removeItem('sessionTokenExpiresAt')
-
+          removeLocalStorageToken()
           // reset flag
           clientLogoutRequest = null
           location.href = ROUTE_PATH.LOGIN
@@ -144,11 +148,10 @@ const request = async <Response>(
       ['auth/login', 'auth/register'].some(item => item === normalizePath(url))
     ) {
       const { token, expiresAt } = (payload as LoginResType).data
-      localStorage.setItem('sessionToken', token)
-      localStorage.setItem('sessionTokenExpiresAt', expiresAt)
+      setLocalStorageToken(token)
+      setLocalTokenExpired(expiresAt)
     } else if ('auth/logout' === normalizePath(url)) {
-      localStorage.removeItem('sessionToken')
-      localStorage.removeItem('sessionTokenExpiresAt')
+      removeLocalStorageToken()
     }
   }
 

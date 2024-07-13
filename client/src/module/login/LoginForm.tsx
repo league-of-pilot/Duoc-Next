@@ -1,5 +1,6 @@
 'use client'
 
+import { useAppContext } from '@/app/AppProvider'
 import StaticCheck from '@/components/StaticCheck'
 import { Button } from '@/components/ui/button'
 import {
@@ -15,9 +16,9 @@ import { useToast } from '@/components/ui/use-toast'
 import authApiRequest from '@/nextApp/apiRequest/auth.api'
 import { handleErrorApi } from '@/nextApp/apiRequest/fetch.utils'
 import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { TLoginSchema, loginFormSchema } from './login.schema'
-import { useState } from 'react'
 
 const FormMap: {
   key: keyof TLoginSchema
@@ -45,6 +46,7 @@ const LoginForm = () => {
   const { toast } = useToast()
   const router = useRouter()
   const [loading, setLoading] = useState(false)
+  const { setUser } = useAppContext()
 
   async function onSubmit(values: TLoginSchema) {
     if (loading) return
@@ -66,6 +68,7 @@ const LoginForm = () => {
         sessionToken: token,
         expiresAt: result.payload.data.expiresAt
       })
+      setUser(result.payload.data.account)
       router.push('/me')
       router.refresh()
     } catch (error: any) {

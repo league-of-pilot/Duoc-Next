@@ -55,6 +55,14 @@ export const getLocalTokenExpired = () => {
 export const setLocalTokenExpired = (exp: string) =>
   localStorage.setItem('sessionTokenExpiresAt', exp)
 
+export const setLocalStorageToken = (token: string) =>
+  localStorage.setItem('sessionToken', token)
+
+export const removeLocalStorageToken = () => {
+  localStorage.removeItem('sessionToken')
+  localStorage.removeItem('sessionTokenExpiresAt')
+}
+
 // ko cần thiết
 // class LocalStorageToken {
 //   getToken() {

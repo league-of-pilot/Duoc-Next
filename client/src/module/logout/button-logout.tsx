@@ -4,6 +4,7 @@ import { useAppContext } from '@/app/AppProvider'
 import { Button } from '@/components/ui/button'
 import authApiRequest from '@/nextApp/apiRequest/auth.api'
 import { handleErrorApi } from '@/nextApp/apiRequest/fetch.utils'
+import { removeLocalStorageToken } from '@/nextApp/apiRequest/sessionToken'
 import { usePathname, useRouter } from 'next/navigation'
 
 export default function ButtonLogout() {
@@ -25,8 +26,7 @@ export default function ButtonLogout() {
       })
     } finally {
       setUser(null)
-      localStorage.removeItem('sessionToken')
-      localStorage.removeItem('sessionTokenExpiresAt')
+      removeLocalStorageToken()
       router.refresh()
     }
   }
